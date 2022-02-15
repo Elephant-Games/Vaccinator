@@ -1,5 +1,5 @@
 ﻿
-namespace Vaccinator {
+namespace Vaccinator.Gui {
     partial class Form1 {
         /// <summary>
         /// Обязательная переменная конструктора.
