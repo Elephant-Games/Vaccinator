@@ -15,7 +15,7 @@ namespace Vaccinator {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Vaccinator.Gui.Form1());
+            ActivityController.GetInstance();
         }
     }
 }

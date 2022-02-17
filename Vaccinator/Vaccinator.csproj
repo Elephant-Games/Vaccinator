@@ -46,13 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityController.cs" />
     <Compile Include="CovidStat.cs" />
     <Compile Include="Exceptions\ParsingException\InvalidUrlException.cs" />
-    <Compile Include="GUI\Form1.cs">
+    <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="GUI\FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
