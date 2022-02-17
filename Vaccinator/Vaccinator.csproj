@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CovidStat.cs" />
     <Compile Include="Exceptions\ParsingException\InvalidUrlException.cs" />
     <Compile Include="GUI\Form1.cs">
       <SubType>Form</SubType>
@@ -77,6 +78,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CefSharp.Common">
+      <Version>98.1.190</Version>
+    </PackageReference>
+    <PackageReference Include="CefSharp.WinForms">
+      <Version>98.1.190</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
