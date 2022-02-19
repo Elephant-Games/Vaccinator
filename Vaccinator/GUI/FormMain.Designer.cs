@@ -1,6 +1,6 @@
 ﻿
-namespace Vaccinator.Gui {
-    partial class Form1 {
+namespace Vaccinator.GUI {
+    partial class FormMain {
         /// <summary>
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -24,10 +24,18 @@ namespace Vaccinator.Gui {
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // FormMain
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.IsMdiContainer = true;
+            this.Name = "FormMain";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

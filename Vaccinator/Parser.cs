@@ -8,7 +8,7 @@ using Vaccinator.Exceptions;
 
 namespace Vaccinator {
     class Parser {
-        private static Regex regex = new Regex(@"http(s?)://(\w+)(\w*)\.(\w+)(\w*)");
+        private static Regex regex = new Regex(@"^http(s?)://(\w+)(\w*)\.(\w+)(\w*)$");
 
         private string url;
         private string htmlCode;
