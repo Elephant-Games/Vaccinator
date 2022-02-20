@@ -48,7 +48,9 @@
   <ItemGroup>
     <Compile Include="ActivityController.cs" />
     <Compile Include="CovidStat.cs" />
-    <Compile Include="Exceptions\ParsingException\InvalidUrlException.cs" />
+    <Compile Include="Exceptions\ParsingExceptions\InvalidUrlException.cs" />
+    <Compile Include="Exceptions\WindowExceptions\IncompleteInitException.cs" />
+    <Compile Include="Game\GameObjects\GameObject.cs" />
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
