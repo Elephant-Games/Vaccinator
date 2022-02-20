@@ -22,8 +22,10 @@ namespace Vaccinator.GUI{
 
         public FormMain() {
             InitializeComponent();
-            this.isInit = true;
 
+            this.Shown += (s, a) => {
+                this.isInit = true;
+            };
             this.FormClosed += formClosed;
         }
 
