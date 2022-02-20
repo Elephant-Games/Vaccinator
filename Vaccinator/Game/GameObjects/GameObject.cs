@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Vaccinator.Game.GameObjects {
     abstract class GameObject {
-        private const int GENERATE_TIME = 10_000;
+        private const int GENERATE_TIME = 10_000; //default generate time
+
+        private static Dictionary<string, int> countObjects = new Dictionary<string, int>(); //<class name, count objects>
 
         private Form gameField;
         private PictureBox sprite;
@@ -17,12 +20,8 @@ namespace Vaccinator.Game.GameObjects {
             this.genTimer = new System.Timers.Timer(this.getTime());
             this.genTimer.Elapsed += generate;
             this.genTimer.Start();
-        }
-
-        private void generate(object sender, EventArgs e) {
-            //TODO: gameField.CreateObject(GameObject object) {}
-            //Console.WriteLine("Last interval: " + this.genTimer.Interval);
-            this.genTimer.Interval = this.getTime();
+            //Add 1 or count + 1
+            countObjects.Add(this.GetType().Name, countObjects.ContainsKey(this.GetType().Name) ? countObjects[this.GetType().Name] + 1 : 1);
         }
 
         /// <summary>
@@ -34,6 +33,21 @@ namespace Vaccinator.Game.GameObjects {
                 this.random = new Random();
             int halfGenTime = GENERATE_TIME / 2;
             return (int)((this.random.Next(-halfGenTime, halfGenTime) + GENERATE_TIME) * this.freq);
+        }
+
+        private void generate(object sender, EventArgs e) {
+            //TODO: gameField.CreateObject(GameObject object) {}
+            this.genTimer.Interval = this.getTime();
+        }
+
+        /// <summary>
+        /// Уничтожает текущий игровой объект
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void Destroy(object sender, EventArgs e) {
+            this.genTimer.Close();
+            this.sprite.Visible = false;
         }
     }
 }

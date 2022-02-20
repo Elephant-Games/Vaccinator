@@ -37,7 +37,7 @@ namespace Vaccinator {
         /// <typeparam name="T">Класс окна, которое нужно открыть</typeparam>
         public void OpenWindow<T>() where T : Form, new() {
             DateTime time = DateTime.Now;
-            while (this.parentForm == null || !this.parentForm.IsInit && (time - DateTime.Now).TotalMilliseconds < 1000)
+            while (this.parentForm == null || !this.parentForm.IsInit && (time - DateTime.Now).TotalMilliseconds < 5000)
                 Thread.Sleep(10);
             if (!this.parentForm.IsInit)
                 throw new IncompleteInitException();
@@ -46,7 +46,9 @@ namespace Vaccinator {
                 this.currentForm.Close();
             this.parentForm.Invoke(new MethodInvoker(() => {
                 this.currentForm = new T();
-                this.currentForm.MdiParent = this.parentForm;
+                //this.currentForm.MdiParent = this.parentForm;
+                this.currentForm.TopLevel = false;
+                this.currentForm.Parent = this.parentForm;
                 this.currentForm.Show();
             }));
         }

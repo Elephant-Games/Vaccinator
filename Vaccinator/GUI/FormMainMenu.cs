@@ -12,6 +12,10 @@ namespace Vaccinator.GUI {
     public partial class FormMainMenu : Form {
         public FormMainMenu() {
             InitializeComponent();
+
+            foreach (Control control in this.Controls)
+                control.Font = Program.Fonts["menu-text"];
+            label5.Font = Program.Fonts["main-text"];
         }
     }
 }
