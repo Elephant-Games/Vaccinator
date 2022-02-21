@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Vaccinator.GUI {
-    public partial class FormMainMenu : Form {
+    public partial class FormMainMenu : FormMain {
         public FormMainMenu() {
             InitializeComponent();
 

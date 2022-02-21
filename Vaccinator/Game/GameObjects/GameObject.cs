@@ -8,11 +8,11 @@ namespace Vaccinator.Game.GameObjects {
 
         private static Dictionary<string, int> countObjects = new Dictionary<string, int>(); //<class name, count objects>
 
-        private Form gameField;
-        private PictureBox sprite;
-        private double freq;
-        private System.Timers.Timer genTimer; //Generate timer
-        private Random random; //random for generate
+        protected Form gameField;
+        protected PictureBox sprite;
+        protected double freq;
+        protected System.Timers.Timer genTimer; //Generate timer
+        protected Random random; //random for generate
 
         public GameObject(PictureBox sprite, double freq = 1.0) {
             this.sprite = sprite;
@@ -25,7 +25,7 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         /// <summary>
-        /// Получение времени для следующего интервала таймера (константное время генерации +- половина этого времени) * частота генерации
+        /// Получение времени для следующего интервала таймера (константное время генерации +- половина этого времени) * частота генерации.
         /// </summary>
         /// <returns>Время для следующего интервала таймера</returns>
         private int getTime() {
@@ -41,7 +41,7 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         /// <summary>
-        /// Уничтожает текущий игровой объект
+        /// Уничтожает текущий игровой объект.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
