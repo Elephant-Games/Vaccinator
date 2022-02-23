@@ -25,13 +25,7 @@ namespace Vaccinator {
         /// </summary>
         [STAThread]
         static void Main() {
-            string path = Application.LocalUserAppDataPath + @"\GorgeousPixel.ttf";
-            if (!File.Exists(path))
-                File.WriteAllBytes(path, Resources.GorgeousPixel);
-
-            fontCollect.AddFontFile(path);
-            fonts.Add("menu-text", new Font(fontCollect.Families[0], D_SIZE_MENU_TEXT));
-            fonts.Add("main-text", new Font(fontCollect.Families[0], D_SIZE_MAIN_TEXT));
+            fontsLoad();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -40,6 +34,16 @@ namespace Vaccinator {
 
         public static void Exit() {
             Application.Exit();
+        }
+
+        private static void fontsLoad() {
+            string path = Application.LocalUserAppDataPath + @"\GorgeousPixel.ttf";
+            if (!File.Exists(path))
+                File.WriteAllBytes(path, Resources.GorgeousPixel);
+
+            fontCollect.AddFontFile(path);
+            fonts.Add("menu-text", new Font(fontCollect.Families[0], D_SIZE_MENU_TEXT));
+            fonts.Add("main-text", new Font(fontCollect.Families[0], D_SIZE_MAIN_TEXT));
         }
     }
 }
