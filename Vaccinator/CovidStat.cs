@@ -12,8 +12,10 @@ namespace Vaccinator {
     /// Загрузка и хранение статистики заболеваемости за последние три дня с сайта стопкоронавирус.рф
     /// </summary>
     class CovidStat {
-        private static CovidStat instance;
+        private const string REQUEST_URL = "https://xn--80aesfpebagmfblc0a.xn--p1ai/covid_data.json?do=region_stats&code=RU-KGN";
+
         private static readonly Regex regex = new Regex(@"(\d*),");
+        private static CovidStat instance;
 
         private DateTime createTime;
         private int[] sicks;
@@ -39,8 +41,8 @@ namespace Vaccinator {
             this.sicks = new int[3];
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            WebRequest request = WebRequest.Create("https://xn--80aesfpebagmfblc0a.xn--p1ai/covid_data.json?do=region_stats&code=RU-KGN");
-            WebResponse response = request.GetResponse();
+            var request = WebRequest.Create(REQUEST_URL);
+            var response = request.GetResponse();
             string json = (new StreamReader(response.GetResponseStream())).ReadToEnd();
             
             for (int i = 0, index = 0; i < sicks.Length; ++i, ++index) {

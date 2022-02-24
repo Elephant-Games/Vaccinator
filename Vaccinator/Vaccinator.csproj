@@ -50,7 +50,11 @@
     <Compile Include="CovidStat.cs" />
     <Compile Include="Exceptions\ParsingExceptions\InvalidUrlException.cs" />
     <Compile Include="Exceptions\WindowExceptions\IncompleteInitException.cs" />
+    <Compile Include="Fonts\Font.cs" />
+    <Compile Include="Fonts\FontName.cs" />
+    <Compile Include="Game\Game.cs" />
     <Compile Include="Game\GameObjects\GameObject.cs" />
+    <Compile Include="Game\Generator.cs" />
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

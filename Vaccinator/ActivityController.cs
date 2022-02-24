@@ -32,11 +32,11 @@ namespace Vaccinator {
         }
 
         /// <summary>
-        /// Открытие окна в MDI-контейнере
+        /// Открытие окна в контейнере
         /// </summary>
         /// <typeparam name="T">Класс окна, которое нужно открыть</typeparam>
         public void OpenWindow<T>() where T : Form, new() {
-            DateTime time = DateTime.Now;
+            var time = DateTime.Now;
             while (this.parentForm == null || !this.parentForm.IsInit && (time - DateTime.Now).TotalMilliseconds < 5000)
                 Thread.Sleep(10);
             if (!this.parentForm.IsInit)
@@ -54,7 +54,7 @@ namespace Vaccinator {
         }
 
         /// <summary>
-        /// Создание основы - главного MDI-контейнера
+        /// Создание основы - главного контейнера
         /// </summary>
         private void createParentWindow() {
             this.parentForm = new FormMain();
