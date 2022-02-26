@@ -61,17 +61,18 @@
     <Compile Include="GUI\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormMenuParent.cs">
+    <Compile Include="GUI\MainMenu\FormMainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\FormMenuParent.Designer.cs">
-      <DependentUpon>FormMenuParent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\FormMainMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\FormMainMenu.Designer.cs">
+    <Compile Include="GUI\MainMenu\FormMainMenu.Designer.cs">
       <DependentUpon>FormMainMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MainMenu\MainMenuChoice.cs" />
+    <Compile Include="GUI\Settings\FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Settings\FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
@@ -79,11 +80,11 @@
     <EmbeddedResource Include="GUI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FormMenuParent.resx">
-      <DependentUpon>FormMenuParent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FormMainMenu.resx">
+    <EmbeddedResource Include="GUI\MainMenu\FormMainMenu.resx">
       <DependentUpon>FormMainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Settings\FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

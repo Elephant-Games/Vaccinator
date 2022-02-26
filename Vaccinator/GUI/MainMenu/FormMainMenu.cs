@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Vaccinator.Fonts;
 
-namespace Vaccinator.GUI {
-    public partial class FormMainMenu : FormMenuParent {
+namespace Vaccinator.GUI.MainMenu {
+    public partial class FormMainMenu : FormMain {
         public FormMainMenu() {
             InitializeComponent();
 
-            foreach (Control control in this.Controls)
-                control.Font = Fonts.Font.GetFont(FontName.MENU_TEXT);
-            label5.Font = Fonts.Font.GetFont(FontName.MAIN_TEXT);
+            base.fontsInit(this, this.labelHead);
 
             this.KeyUp += frmMainMenu_KeyUp;
         }
@@ -28,6 +19,27 @@ namespace Vaccinator.GUI {
                 case Keys.Down:
                     MovePointer();
                     break;
+
+                case Keys.Enter:
+                    this.openWindow(this.getRow(lblPtrLeft));
+                    break;
+            }
+        }
+
+        private void openWindow(int row) {
+            switch( (MainMenuChoice)row ) {
+                case MainMenuChoice.PLAY:
+                    break;
+
+                case MainMenuChoice.SETTINGS:
+                    ActivityController.GetInstance().OpenWindow<Settings.FormSettings>();
+                    break;
+
+                case MainMenuChoice.RECORDS:
+                    break;
+
+                case MainMenuChoice.AUTHORS:
+                    break;
             }
         }
 
@@ -36,14 +48,18 @@ namespace Vaccinator.GUI {
         /// </summary>
         /// <param name="value">Размер сдвига указателей.</param>
         private void MovePointer(sbyte value = 1) {
-            int row = tblInner.GetPositionFromControl(this.lblPtrLeft).Row;
+            int row = this.getRow(this.lblPtrLeft);
             row += value;
             row %= tblInner.RowCount;
             if (row < 0)
                 row = tblInner.RowCount - 1;
-            
+
             tblInner.SetRow(this.lblPtrLeft, row);
             tblInner.SetRow(this.lblPtrRight, row);
+        }
+
+        private int getRow(Control control) {
+            return tblInner.GetPositionFromControl(control).Row;
         }
     }
 }

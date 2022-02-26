@@ -1,5 +1,5 @@
 ﻿
-namespace Vaccinator.GUI {
+namespace Vaccinator.GUI.MainMenu {
     partial class FormMainMenu {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@ namespace Vaccinator.GUI {
             this.label4 = new System.Windows.Forms.Label();
             this.lblPtrLeft = new System.Windows.Forms.Label();
             this.lblPtrRight = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.labelHead = new System.Windows.Forms.Label();
             this.tblOuter.SuspendLayout();
             this.tblInner.SuspendLayout();
             this.SuspendLayout();
@@ -44,7 +44,7 @@ namespace Vaccinator.GUI {
             this.tblOuter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tblOuter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tblOuter.Controls.Add(this.tblInner, 1, 1);
-            this.tblOuter.Controls.Add(this.label5, 1, 0);
+            this.tblOuter.Controls.Add(this.labelHead, 1, 0);
             this.tblOuter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblOuter.Location = new System.Drawing.Point(0, 0);
             this.tblOuter.Name = "tblOuter";
@@ -152,16 +152,16 @@ namespace Vaccinator.GUI {
             this.lblPtrRight.Text = "(";
             this.lblPtrRight.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label5
+            // labelHead
             // 
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.ForeColor = System.Drawing.Color.Red;
-            this.label5.Location = new System.Drawing.Point(305, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(397, 262);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "VACCINATOR";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelHead.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelHead.ForeColor = System.Drawing.Color.Red;
+            this.labelHead.Location = new System.Drawing.Point(305, 0);
+            this.labelHead.Name = "labelHead";
+            this.labelHead.Size = new System.Drawing.Size(397, 262);
+            this.labelHead.TabIndex = 1;
+            this.labelHead.Text = "VACCINATOR";
+            this.labelHead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormMainMenu
             // 
@@ -191,7 +191,7 @@ namespace Vaccinator.GUI {
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label labelHead;
         private System.Windows.Forms.Label lblPtrLeft;
         private System.Windows.Forms.Label lblPtrRight;
     }
