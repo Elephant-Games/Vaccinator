@@ -66,6 +66,12 @@
     <Compile Include="GUI\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormMenuParent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormMenuParent.Designer.cs">
+      <DependentUpon>FormMenuParent.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormMainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GUI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormMenuParent.resx">
+      <DependentUpon>FormMenuParent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormMainMenu.resx">
       <DependentUpon>FormMainMenu.cs</DependentUpon>

@@ -24,66 +24,70 @@ namespace Vaccinator.GUI {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tblOuter = new System.Windows.Forms.TableLayoutPanel();
+            this.tblInner = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.lblPtrLeft = new System.Windows.Forms.Label();
+            this.lblPtrRight = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.tblOuter.SuspendLayout();
+            this.tblInner.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // tblOuter
             // 
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label5, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1008, 729);
-            this.tableLayoutPanel1.TabIndex = 0;
+            this.tblOuter.ColumnCount = 3;
+            this.tblOuter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tblOuter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tblOuter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tblOuter.Controls.Add(this.tblInner, 1, 1);
+            this.tblOuter.Controls.Add(this.label5, 1, 0);
+            this.tblOuter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tblOuter.Location = new System.Drawing.Point(0, 0);
+            this.tblOuter.Name = "tblOuter";
+            this.tblOuter.RowCount = 3;
+            this.tblOuter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36F));
+            this.tblOuter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36F));
+            this.tblOuter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28F));
+            this.tblOuter.Size = new System.Drawing.Size(1008, 729);
+            this.tblOuter.TabIndex = 0;
             // 
-            // tableLayoutPanel2
+            // tblInner
             // 
-            this.tableLayoutPanel2.BackColor = System.Drawing.Color.Black;
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.label1, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label2, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.label3, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.label4, 1, 3);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(302, 262);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 4;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(403, 262);
-            this.tableLayoutPanel2.TabIndex = 0;
+            this.tblInner.BackColor = System.Drawing.Color.Black;
+            this.tblInner.ColumnCount = 3;
+            this.tblInner.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tblInner.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tblInner.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tblInner.Controls.Add(this.label1, 1, 0);
+            this.tblInner.Controls.Add(this.label2, 1, 1);
+            this.tblInner.Controls.Add(this.label3, 1, 2);
+            this.tblInner.Controls.Add(this.label4, 1, 3);
+            this.tblInner.Controls.Add(this.lblPtrLeft, 0, 0);
+            this.tblInner.Controls.Add(this.lblPtrRight, 2, 0);
+            this.tblInner.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tblInner.Location = new System.Drawing.Point(302, 262);
+            this.tblInner.Margin = new System.Windows.Forms.Padding(0);
+            this.tblInner.Name = "tblInner";
+            this.tblInner.RowCount = 4;
+            this.tblInner.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tblInner.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tblInner.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tblInner.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tblInner.Size = new System.Drawing.Size(403, 262);
+            this.tblInner.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.label1.Location = new System.Drawing.Point(80, 0);
+            this.label1.Location = new System.Drawing.Point(120, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(241, 65);
+            this.label1.Size = new System.Drawing.Size(161, 65);
             this.label1.TabIndex = 0;
             this.label1.Text = "START";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -92,10 +96,10 @@ namespace Vaccinator.GUI {
             // 
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.label2.Location = new System.Drawing.Point(80, 65);
+            this.label2.Location = new System.Drawing.Point(120, 65);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(241, 65);
+            this.label2.Size = new System.Drawing.Size(161, 65);
             this.label2.TabIndex = 1;
             this.label2.Text = "SETTINGS";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -104,10 +108,10 @@ namespace Vaccinator.GUI {
             // 
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.label3.Location = new System.Drawing.Point(80, 130);
+            this.label3.Location = new System.Drawing.Point(120, 130);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(241, 65);
+            this.label3.Size = new System.Drawing.Size(161, 65);
             this.label3.TabIndex = 2;
             this.label3.Text = "RECORDS";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -116,13 +120,37 @@ namespace Vaccinator.GUI {
             // 
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.label4.Location = new System.Drawing.Point(80, 195);
+            this.label4.Location = new System.Drawing.Point(120, 195);
             this.label4.Margin = new System.Windows.Forms.Padding(0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(241, 67);
+            this.label4.Size = new System.Drawing.Size(161, 67);
             this.label4.TabIndex = 3;
             this.label4.Text = "AUTHORS";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPtrLeft
+            // 
+            this.lblPtrLeft.AutoSize = true;
+            this.lblPtrLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPtrLeft.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.lblPtrLeft.Location = new System.Drawing.Point(3, 0);
+            this.lblPtrLeft.Name = "lblPtrLeft";
+            this.lblPtrLeft.Size = new System.Drawing.Size(114, 65);
+            this.lblPtrLeft.TabIndex = 4;
+            this.lblPtrLeft.Text = ")";
+            this.lblPtrLeft.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblPtrRight
+            // 
+            this.lblPtrRight.AutoSize = true;
+            this.lblPtrRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPtrRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.lblPtrRight.Location = new System.Drawing.Point(284, 0);
+            this.lblPtrRight.Name = "lblPtrRight";
+            this.lblPtrRight.Size = new System.Drawing.Size(116, 65);
+            this.lblPtrRight.TabIndex = 4;
+            this.lblPtrRight.Text = "(";
+            this.lblPtrRight.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label5
             // 
@@ -141,28 +169,30 @@ namespace Vaccinator.GUI {
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.ControlBox = false;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tblOuter);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormMainMenu";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tblOuter.ResumeLayout(false);
+            this.tblInner.ResumeLayout(false);
+            this.tblInner.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tblOuter;
+        private System.Windows.Forms.TableLayoutPanel tblInner;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblPtrLeft;
+        private System.Windows.Forms.Label lblPtrRight;
     }
 }
