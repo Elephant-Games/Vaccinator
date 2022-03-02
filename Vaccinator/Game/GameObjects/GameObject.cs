@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Vaccinator.GUI;
 
 namespace Vaccinator.Game.GameObjects {
     abstract class GameObject {
@@ -8,11 +9,14 @@ namespace Vaccinator.Game.GameObjects {
 
         private static Dictionary<Type, int> countObjects = new Dictionary<Type, int>(); //<class name, count objects>
 
+        protected static readonly Random random = new Random();
+
         protected Form gameField;
         protected PictureBox sprite;
 
-        public GameObject() {
+        public GameObject(FormMain gameField) {
             //Add 1 or count + 1
+            this.gameField = gameField;
             countObjects.Add(this.GetType(), countObjects.ContainsKey(this.GetType()) ? countObjects[this.GetType()] + 1 : 1);
         }
 
