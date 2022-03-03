@@ -60,6 +60,12 @@
     <Compile Include="Game\GameObjects\GameObject.cs" />
     <Compile Include="Game\GameObjects\MBossEnemy.cs" />
     <Compile Include="Game\Generator.cs" />
+    <Compile Include="GUI\FormGame.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormGame.Designer.cs">
+      <DependentUpon>FormGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +88,9 @@
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\FormGame.resx">
+      <DependentUpon>FormGame.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -114,14 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CefSharp.Common">
-      <Version>98.1.190</Version>
-    </PackageReference>
-    <PackageReference Include="CefSharp.WinForms">
-      <Version>98.1.190</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
