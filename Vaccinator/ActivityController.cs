@@ -80,7 +80,7 @@ namespace Vaccinator {
                 throw new IncompleteInitException();
 
             if (this.currentForm != null)
-                this.currentForm.Close();
+                this.currentForm.Invoke(new MethodInvoker(() => this.currentForm.Close()));
         }
 
         private void endOpenWindow() {

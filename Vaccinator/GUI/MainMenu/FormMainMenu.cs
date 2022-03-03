@@ -3,17 +3,38 @@ using System.Windows.Forms;
 
 namespace Vaccinator.GUI.MainMenu {
     public partial class FormMainMenu : FormMain {
+
+        //TODO: get value from settings
+        private const int AUTOPLAY_INTERVAL = 90_000; //ms
+
+        private static int row = -1;
+
+        private System.Timers.Timer autoplayTimer;
+
         public FormMainMenu() {
             InitializeComponent();
 
             base.fontsInit(this, this.labelHead);
 
+            if (row == -1)
+                row = this.getRow(this.lblPtrLeft);
+            else
+                this.MovePointer(0);
+
+            this.autoplayTimer = new System.Timers.Timer(AUTOPLAY_INTERVAL);
+            this.autoplayTimer.Elapsed += (s, a) => {
+                ActivityController.GetInstance().OpenWindow<FormGame>();//TODO: autoplay
+            };
+            this.autoplayTimer.Start();
+
             this.KeyUp += frmMainMenu_KeyUp;
+            this.FormClosed += (s, a) => this.autoplayTimer.Close();
         }
 
         private void frmMainMenu_KeyUp(object sender, KeyEventArgs e) {
+            this.autoplayTimer.Interval = AUTOPLAY_INTERVAL;
             switch (e.KeyData) {
-                case Keys.Up: //TODO: using key constants form settings
+                case Keys.Up: //TODO: using key constants from settings
                     MovePointer(-1);
                     break;
                 case Keys.Down:
@@ -29,6 +50,7 @@ namespace Vaccinator.GUI.MainMenu {
         private void openWindow(int row) {
             switch( (MainMenuChoice)row ) {
                 case MainMenuChoice.PLAY:
+                    ActivityController.GetInstance().OpenWindow<FormGame>();
                     break;
 
                 case MainMenuChoice.SETTINGS:
@@ -48,7 +70,6 @@ namespace Vaccinator.GUI.MainMenu {
         /// </summary>
         /// <param name="value">Размер сдвига указателей.</param>
         private void MovePointer(sbyte value = 1) {
-            int row = this.getRow(this.lblPtrLeft);
             row += value;
             row %= tblInner.RowCount;
             if (row < 0)

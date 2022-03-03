@@ -32,10 +32,11 @@ namespace Vaccinator.GUI{
                 Program.Exit();
         }
 
-        protected void fontsInit(Form form, Control head) {
+        protected void fontsInit(Form form, Control head = null) {
             foreach (Control control in form.Controls)
                 control.Font = Fonts.Font.GetFont(FontName.MENU_TEXT);
-            head.Font = Fonts.Font.GetFont(FontName.MAIN_TEXT);
+            if (head != null)
+                head.Font = Fonts.Font.GetFont(FontName.MAIN_TEXT);
         }
     }
 }
