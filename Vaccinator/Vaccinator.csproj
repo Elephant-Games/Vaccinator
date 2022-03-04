@@ -53,7 +53,12 @@
     <Compile Include="Fonts\Font.cs" />
     <Compile Include="Fonts\FontName.cs" />
     <Compile Include="Game\Game.cs" />
+    <Compile Include="Game\GameObjects\BaseEnemy.cs" />
+    <Compile Include="Game\GameObjects\BossEnemy.cs" />
+    <Compile Include="Game\GameObjects\Character.cs" />
+    <Compile Include="Game\GameObjects\Enemy.cs" />
     <Compile Include="Game\GameObjects\GameObject.cs" />
+    <Compile Include="Game\GameObjects\MBossEnemy.cs" />
     <Compile Include="Game\Generator.cs" />
     <Compile Include="GUI\FormGame.cs">
       <SubType>Form</SubType>

@@ -8,6 +8,5 @@ namespace Vaccinator.Fonts {
     enum FontName {
         MAIN_TEXT,
         MENU_TEXT,
-
     }
 }
