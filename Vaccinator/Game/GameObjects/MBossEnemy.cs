@@ -7,11 +7,11 @@ using Vaccinator.GUI;
 
 namespace Vaccinator.Game.GameObjects {
     class MBossEnemy : Enemy{
-        private const byte SPEED = 2;
-        private const byte SHOT_SPEED = 2;
-        private const byte BULLET_SPEED = 4;
-        private static readonly byte[] BULLET_POWER = new byte[] { 1, 2 };
-        private const byte HEALTH = 2;
+        public const byte SPEED = 2;
+        public const byte SHOT_SPEED = 2;
+        public const byte BULLET_SPEED = 4;
+        public static readonly byte[] BULLET_POWER = new byte[] { 1, 2 };
+        public const byte HEALTH = 2;
 
         public MBossEnemy(FormMain gameField) : base(gameField) {
             this.speed = SPEED;

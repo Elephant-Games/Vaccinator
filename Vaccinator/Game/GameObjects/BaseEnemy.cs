@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vaccinator.GUI;
 
 namespace Vaccinator.Game.GameObjects {
     class BaseEnemy : Enemy {
-        private const byte SPEED = 1;
-        private const byte SHOT_SPEED = 3;
-        private const byte BULLET_SPEED = 3;
-        private static readonly byte[] BULLET_POWER = new byte[] { 1, 2 };
-        private const byte HEALTH = 1;
+        public const byte SPEED = 1;
+        public const byte SHOT_SPEED = 3;
+        public const byte BULLET_SPEED = 3;
+        public static readonly byte[] BULLET_POWER = new byte[] { 1, 2 };
+        public const byte HEALTH = 1;
 
-        public BaseEnemy(byte speed, byte shotSpeed, byte bulSpeed, byte health) : base(speed, shotSpeed, bulSpeed, health) {
+        public BaseEnemy(FormMain gameField) : base(gameField) {
             this.speed = SPEED;
             this.shotSpeed = SHOT_SPEED;
             this.bulSpeed = BULLET_SPEED;

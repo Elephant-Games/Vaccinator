@@ -11,12 +11,12 @@ namespace Vaccinator.Game.GameObjects {
 
         protected static readonly Random random = new Random();
 
-        protected Form gameField;
+        protected FormMain gameField;
         protected PictureBox sprite;
 
         public GameObject(FormMain gameField) {
-            //Add 1 or count + 1
             this.gameField = gameField;
+            //Add 1 or count + 1
             countObjects.Add(this.GetType(), countObjects.ContainsKey(this.GetType()) ? countObjects[this.GetType()] + 1 : 1);
         }
 
