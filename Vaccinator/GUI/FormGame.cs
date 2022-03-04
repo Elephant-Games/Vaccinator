@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Vaccinator.GUI {
-    public partial class FormMainMenu : FormMain {
-        public FormMainMenu() {
+    public partial class FormGame : FormMain {
+        public FormGame() {
             InitializeComponent();
+
+            base.fontsInit(this);
         }
     }
 }

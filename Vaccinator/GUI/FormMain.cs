@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Vaccinator.Exceptions;
+using Vaccinator.Fonts;
 
 namespace Vaccinator.GUI{
     public partial class FormMain : Form {
@@ -27,10 +19,24 @@ namespace Vaccinator.GUI{
                 this.isInit = true;
             };
             this.FormClosed += formClosed;
+            this.PreviewKeyDown += this.formMain_PreviewKeyDown;
+        }
+
+        private void formMain_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {
+            if (e.KeyCode == Keys.Escape)
+                ActivityController.GetInstance().OpenPrevWindow();
         }
 
         private void formClosed(object sender, EventArgs args) {
-            Program.Exit();
+            if (typeof(FormMain) == sender.GetType())
+                Program.Exit();
+        }
+
+        protected void fontsInit(Form form, Control head = null) {
+            foreach (Control control in form.Controls)
+                control.Font = Fonts.Font.GetFont(FontName.MENU_TEXT);
+            if (head != null)
+                head.Font = Fonts.Font.GetFont(FontName.MAIN_TEXT);
         }
     }
 }
