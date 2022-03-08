@@ -7,8 +7,14 @@ using Vaccinator.GUI;
 
 namespace Vaccinator.Game.GameObjects {
     abstract class Enemy : Character {
-        public Enemy(FormMain gameField) : base(gameField) {
 
+        protected Enemy(FormMain gameField, byte speed, byte shotSpeed, byte bulSpeed, byte[] bulPower, byte health) : base(gameField,
+            speed, shotSpeed, bulSpeed, getBulletPower(bulPower), health) {
+
+        }
+
+        private static byte getBulletPower(byte[] bulPow) {
+            return (byte)GameObject.random.Next(bulPow[0], bulPow[1]);
         }
     }
 }

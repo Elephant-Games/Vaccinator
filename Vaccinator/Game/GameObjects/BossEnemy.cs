@@ -13,12 +13,8 @@ namespace Vaccinator.Game.GameObjects {
         public static readonly byte[] BULLET_POWER = new byte[] { 1, 2 };
         public const byte HEALTH = 5;
 
-        public BossEnemy(FormMain gameField) : base(gameField) {
-            this.speed = SPEED;
-            this.shotSpeed = SHOT_SPEED;
-            this.bulSpeed = BULLET_SPEED;
-            this.bulPower = (byte)GameObject.random.Next(BULLET_POWER[0], BULLET_POWER[1] + 1);
-            this.health = HEALTH;
+        public BossEnemy(FormMain gameField) : base(gameField,
+            SPEED, SHOT_SPEED, BULLET_SPEED, BULLET_POWER, HEALTH) {
         }
     }
 }

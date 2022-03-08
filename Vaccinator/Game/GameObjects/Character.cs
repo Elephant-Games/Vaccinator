@@ -7,14 +7,18 @@ using Vaccinator.GUI;
 
 namespace Vaccinator.Game.GameObjects {
     abstract class Character : GameObject {
-        protected byte speed;
-        protected byte shotSpeed;
-        protected byte bulSpeed;
-        protected byte bulPower;
-        protected byte health;
+        private byte speed;
+        private byte shotSpeed;
+        private byte bulSpeed;
+        private byte bulPower;
+        private byte health;
 
-        public Character(FormMain gameField) : base(gameField) {
-
+        protected Character(FormMain gameField, byte speed, byte shotSpeed, byte bulSpeed, byte bulPower, byte health) : base(gameField) {
+            this.speed = speed;
+            this.shotSpeed = shotSpeed;
+            this.bulSpeed = bulSpeed;
+            this.bulPower = bulPower;
+            this.health = health;
         }
     }
 }
