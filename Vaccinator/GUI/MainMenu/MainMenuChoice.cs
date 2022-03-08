@@ -9,6 +9,7 @@ namespace Vaccinator.GUI.MainMenu {
         PLAY = 0,
         SETTINGS = 1,
         RECORDS = 2,
-        AUTHORS = 3
+        AUTHORS = 3,
+        EXIT = 4
     }
 }

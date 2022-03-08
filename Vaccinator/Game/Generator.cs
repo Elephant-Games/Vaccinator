@@ -37,7 +37,7 @@ namespace Vaccinator.Game {
         /// <param name="e"></param>
         private void generate(object sender, ElapsedEventArgs e) {
             this.setInterval();
-            this.game.AddGameObject( Activator.CreateInstance(this.genType) as GameObject );
+            this.game.AddGameObject( Activator.CreateInstance(this.genType, null) as GameObject ); //TODO: current gameField
         }
 
         /// <summary>

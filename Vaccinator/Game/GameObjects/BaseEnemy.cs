@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using Vaccinator.GUI;
 
 namespace Vaccinator.Game.GameObjects {
@@ -12,9 +8,10 @@ namespace Vaccinator.Game.GameObjects {
         public const byte BULLET_SPEED = 3;
         public static readonly byte[] BULLET_POWER = new byte[] { 1, 2 };
         public const byte HEALTH = 1;
+        public static readonly Image skin = Properties.Resources.base_enemy_a;
 
-        public BaseEnemy(FormMain gameField) : base(gameField,
-            SPEED, SHOT_SPEED, BULLET_SPEED, BULLET_POWER, HEALTH) {
+        public BaseEnemy(FormMain gameField) :
+            base(gameField, skin, SPEED, SHOT_SPEED, BULLET_SPEED, BULLET_POWER, HEALTH) {
         }
     }
 }
