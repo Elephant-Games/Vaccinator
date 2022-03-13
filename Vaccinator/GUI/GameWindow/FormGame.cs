@@ -8,12 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Vaccinator.GUI {
+namespace Vaccinator.GUI.GameWindow {
     public partial class FormGame : FormMain {
         public FormGame() {
             InitializeComponent();
-
             base.fontsInit(this);
+
+            Game.Game.GetInstance(this);
         }
+
+
     }
 }

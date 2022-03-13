@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.GUI.MainMenu {
     public partial class FormMainMenu : FormMain {

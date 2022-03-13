@@ -1,5 +1,5 @@
 ﻿
-namespace Vaccinator.GUI {
+namespace Vaccinator.GUI.GameWindow {
     partial class FormGame {
         /// <summary>
         /// Required designer variable.

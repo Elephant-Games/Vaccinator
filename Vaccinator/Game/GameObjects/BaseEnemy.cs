@@ -10,8 +10,8 @@ namespace Vaccinator.Game.GameObjects {
         public const byte HEALTH = 1;
         public static readonly Image skin = Properties.Resources.base_enemy_a;
 
-        public BaseEnemy(FormMain gameField) :
-            base(gameField, skin, SPEED, SHOT_SPEED, BULLET_SPEED, BULLET_POWER, HEALTH) {
+        public BaseEnemy(object gameField) :
+            base(gameField as FormMain, skin, SPEED, SHOT_SPEED, BULLET_SPEED, BULLET_POWER, HEALTH) {
         }
     }
 }
