@@ -42,18 +42,16 @@ namespace Vaccinator.Game {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void generate(object sender, ElapsedEventArgs e) {
-            this.genTimer.Stop(); //todo: temp
             this.setInterval();
 
             GameObject tempGObj = null;
             this.gameField.Invoke(new MethodInvoker(() => {
-                tempGObj = Activator.CreateInstance(this.genType, this.gameField) as GameObject; //TODO: current gameField
-                tempGObj.SpriteLocation = new Point(this.random.Next(0, 100), this.random.Next(0, 100));//this.getPoint();
+                tempGObj = Activator.CreateInstance(this.genType, this.gameField) as GameObject;
+                tempGObj.SpriteLocation = this.getPoint();
             }));
             Game.GetInstance().AddGameObject(tempGObj);
             Console.WriteLine(tempGObj.GetType());
             OnGenerated(tempGObj);
-            this.genTimer.Start(); //todo: temp
         }
 
         private Point getPoint() {
