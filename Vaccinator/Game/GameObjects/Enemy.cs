@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vaccinator.GUI;
+using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
     abstract class Enemy : Character {
 
-        protected Enemy(FormMain gameField, Image skin, byte speed, byte shotSpeed, byte bulSpeed, byte[] bulPower, byte health) :
+        protected Enemy(FormGame gameField, Image skin, byte speed, byte shotSpeed, byte bulSpeed, byte[] bulPower, byte health) :
             base(gameField, skin, speed, shotSpeed, bulSpeed, getBulletPower(bulPower), health) {
 
         }

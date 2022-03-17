@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Vaccinator.Exceptions.WindowExceptions;
 using Vaccinator.GUI;
+using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
     abstract class GameObject {
@@ -16,7 +17,7 @@ namespace Vaccinator.Game.GameObjects {
         private const int GENERATE_TIME = 10_000; //default generate time
         private static Dictionary<Type, int> countObjects = new Dictionary<Type, int>(); //<class name, count objects>
 
-        private FormMain gameField;
+        private FormGame gameField;
         private PictureBox sprite;
 
         //============================Containers=====================================
@@ -36,13 +37,13 @@ namespace Vaccinator.Game.GameObjects {
                     throw new PointOutOfRangeException("The point outside the confidence interval.", value);
                 }
                 this.gameField.Invoke(
-                    new MethodInvoker(() => this.sprite.Location = value)
+                    new MethodInvoker( () => this.sprite.Location = value )
                 );
             }
         }
 
         //============================Constructors====================================
-        protected GameObject(FormMain gameField, Image skin) {
+        protected GameObject(FormGame gameField, Image skin) {
             this.gameField = gameField;
 
             //PictureBox initialization

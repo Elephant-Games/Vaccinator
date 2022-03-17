@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vaccinator.GUI;
+using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
     abstract class Character : GameObject, IMoveable {
@@ -16,10 +17,12 @@ namespace Vaccinator.Game.GameObjects {
         private byte bulPower;
         private byte health;
 
+        private double shift = 0;
+
         private Point destination;
         private bool isMoving;
 
-        protected Character(FormMain gameField, Image sprite, byte speed, byte shotSpeed, byte bulSpeed, byte bulPower, byte health) :
+        protected Character(FormGame gameField, Image sprite, byte speed, byte shotSpeed, byte bulSpeed, byte bulPower, byte health) :
             base(gameField, sprite) {
             
             this.speed = speed;
@@ -40,26 +43,22 @@ namespace Vaccinator.Game.GameObjects {
             this.Move();
         }
 
-        public void Move() {
+        public virtual void Move() {
             if (!this.isMoving)
                 return;
             //Console.WriteLine($"nx = {this.destination.X}, ny = {this.destination.Y}");
-            if (
-                !this.destination.Equals(base.SpriteLocation)
-                && Math.Abs(this.destination.X - base.SpriteLocation.X) < 5
-                && Math.Abs(this.destination.Y - base.SpriteLocation.Y) < 5
-                ) {
+            if (this.isSpriteCanMoveToPoint(this.destination)) {
                 base.SpriteLocation = this.destination;
                 return;
             }
 
-            if (base.SpriteLocation.Equals(new Point(400, 400))) {
+            if (base.SpriteLocation.Equals(new Point(400, 400))) { //todo: temp solution
                 this.isMoving = false;
                 return;
             }
             
             if (base.SpriteLocation.Equals(this.destination))
-                this.destination = new Point(400, 400);
+                this.destination = new Point(400, 400); //todo: temp solution
 
             double delX = this.destination.X - base.SpriteLocation.X;
             double delY = this.destination.Y - base.SpriteLocation.Y;
@@ -67,7 +66,7 @@ namespace Vaccinator.Game.GameObjects {
             double delYS = Math.Pow(delY, 2);
             double length = Math.Sqrt(delXS + delYS);
 
-            double shift = this.speed * GameObject.PIXELS_PER_TICK;
+            double shift = this.getShift();
 
             double nX = (shift * (delX / length)),
                 nY = (shift * (delY / length));
@@ -76,6 +75,19 @@ namespace Vaccinator.Game.GameObjects {
                 (int)Math.Floor(base.SpriteLocation.X + nX),
                 (int)Math.Floor(base.SpriteLocation.Y + nY)
             );
+        }
+
+        protected bool isSpriteCanMoveToPoint(Point point) {
+            return
+                !point.Equals(base.SpriteLocation)
+                && Math.Abs(point.X - base.SpriteLocation.X) < 5
+                && Math.Abs(point.Y - base.SpriteLocation.Y) < 5;
+        }
+
+        protected double getShift() {
+            if (this.shift == 0)
+                this.shift = this.speed * GameObject.PIXELS_PER_TICK;
+            return this.shift;
         }
 
         public void Stop() {

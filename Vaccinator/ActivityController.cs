@@ -19,6 +19,12 @@ namespace Vaccinator {
 
         private Stack<Type> guiStack;
 
+        public FormMain CurrentWindow {
+            get {
+                return this.currentForm;
+            }
+        }
+
         private ActivityController() {
             this.guiStack = new Stack<Type>();
 

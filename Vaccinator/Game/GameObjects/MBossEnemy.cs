@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vaccinator.GUI;
+using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
     class MBossEnemy : Enemy{
@@ -16,7 +17,7 @@ namespace Vaccinator.Game.GameObjects {
         public static readonly Image skin = Properties.Resources.base_enemy_a; //TODO: other enemy
 
         public MBossEnemy(object gameField) :
-            base(gameField as FormMain, skin, SPEED, SHOT_SPEED, BULLET_SPEED, BULLET_POWER, HEALTH) {
+            base(gameField as FormGame, skin, SPEED, SHOT_SPEED, BULLET_SPEED, BULLET_POWER, HEALTH) {
         }
     }
 }
