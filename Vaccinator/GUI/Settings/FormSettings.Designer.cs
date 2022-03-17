@@ -43,16 +43,16 @@ namespace Vaccinator.GUI.Settings {
             this.tblOuter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tblOuter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tblOuter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tblOuter.Size = new System.Drawing.Size(992, 690);
+            this.tblOuter.Size = new System.Drawing.Size(784, 561);
             this.tblOuter.TabIndex = 0;
             // 
             // lblHead
             // 
             this.lblHead.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblHead.ForeColor = System.Drawing.Color.Red;
-            this.lblHead.Location = new System.Drawing.Point(300, 0);
+            this.lblHead.Location = new System.Drawing.Point(238, 0);
             this.lblHead.Name = "lblHead";
-            this.lblHead.Size = new System.Drawing.Size(390, 207);
+            this.lblHead.Size = new System.Drawing.Size(307, 168);
             this.lblHead.TabIndex = 0;
             this.lblHead.Text = "SETTINGS";
             this.lblHead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -61,7 +61,7 @@ namespace Vaccinator.GUI.Settings {
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(992, 690);
+            this.ClientSize = new System.Drawing.Size(784, 561);
             this.ControlBox = false;
             this.Controls.Add(this.tblOuter);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

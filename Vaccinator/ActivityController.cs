@@ -19,12 +19,18 @@ namespace Vaccinator {
 
         private Stack<Type> guiStack;
 
+        public FormMain CurrentWindow {
+            get {
+                return this.currentForm;
+            }
+        }
+
         private ActivityController() {
             this.guiStack = new Stack<Type>();
 
             this.curFThread = new Thread(createParentWindow);
             this.curFThread.Start();
-            this.OpenWindow<FormMainMenu>();
+            this.OpenWindow<FormMainMenu>(); //start window
         }
 
         /// <summary>
@@ -63,7 +69,7 @@ namespace Vaccinator {
         /// <summary>
         /// Открытие окна в контейнере
         /// </summary>
-        /// <typeparam name="T">Класс окна, которое нужно открыть</typeparam>
+        /// <param name="type">Класс окна, которое нужно открыть</typeparam>
         public void OpenWindow(Type type) {
             initOpenWindow();
             this.currentForm = Activator.CreateInstance(type) as FormMain;

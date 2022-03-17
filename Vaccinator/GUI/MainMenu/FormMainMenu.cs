@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.GUI.MainMenu {
     public partial class FormMainMenu : FormMain {
@@ -62,6 +63,10 @@ namespace Vaccinator.GUI.MainMenu {
 
                 case MainMenuChoice.AUTHORS:
                     break;
+
+                case MainMenuChoice.EXIT:
+                    Program.Exit();
+                    break;
             }
         }
 
@@ -71,9 +76,9 @@ namespace Vaccinator.GUI.MainMenu {
         /// <param name="value">Размер сдвига указателей.</param>
         private void MovePointer(sbyte value = 1) {
             row += value;
-            row %= tblInner.RowCount;
+            row %= tblInner.RowCount - 1;
             if (row < 0)
-                row = tblInner.RowCount - 1;
+                row = tblInner.RowCount - 2;
 
             tblInner.SetRow(this.lblPtrLeft, row);
             tblInner.SetRow(this.lblPtrRight, row);

@@ -1,30 +1,36 @@
 ﻿using System;
+using System.Drawing;
 using System.Timers;
+using System.Windows.Forms;
 using Vaccinator.Game.GameObjects;
+using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game {
     class Generator {
         private const ushort INTERVAL = 10_000;
 
+        private FormGame gameField;
         private double freq;
 
-        private Game game;
         private Random random;
-        private Timer genTimer;
+        private System.Timers.Timer genTimer;
         private Type genType;
 
-        public Generator(double freq = 1.0) {
+        public delegate void Generate(GameObject gameObject);
+        public static event Generate OnGenerated;
+
+        public Generator(FormGame gameField, double freq = 1.0) {
+            this.gameField = gameField;
             this.freq = freq;
 
             this.random = new Random();
-            this.game = Game.GetInstance();
-            this.genTimer = new Timer();
+            this.genTimer = new System.Timers.Timer();
             this.setInterval();
             this.genTimer.Elapsed += this.generate;
         }
 
-        public void StartGeneration<T>() where T : GameObject, new() {
-            if (this.genType == null)
+        public void StartGeneration<T>() where T : GameObject {
+            if (this.genType != null)
                 throw new FieldAccessException("The generation has been launched!");
             this.genType = typeof(T);
             this.genTimer.Start();
@@ -37,7 +43,38 @@ namespace Vaccinator.Game {
         /// <param name="e"></param>
         private void generate(object sender, ElapsedEventArgs e) {
             this.setInterval();
-            this.game.AddGameObject( Activator.CreateInstance(this.genType) as GameObject );
+
+            GameObject tempGObj = null;
+            this.gameField.Invoke(new MethodInvoker(() => {
+                tempGObj = Activator.CreateInstance(this.genType, this.gameField) as GameObject;
+                tempGObj.SpriteLocation = this.getPoint();
+            }));
+            Game.GetInstance().AddGameObject(tempGObj);
+            Console.WriteLine(tempGObj.GetType());
+            OnGenerated(tempGObj);
+        }
+
+        private Point getPoint() {
+            int x = this.random.Next(-GameObject.CONFIDENCE_INTERVAL, this.gameField.Width + GameObject.CONFIDENCE_INTERVAL),
+                y = this.random.Next(-GameObject.CONFIDENCE_INTERVAL, this.gameField.Height + GameObject.CONFIDENCE_INTERVAL),
+                orient = this.random.Next(0, Enum.GetNames(typeof(Sides)).Length);
+
+            switch ( (Sides)orient ) {
+                case Sides.TOP:
+                    y = -GameObject.CONFIDENCE_INTERVAL;
+                    break;
+                case Sides.BOTTOM:
+                    y = this.gameField.Height + GameObject.CONFIDENCE_INTERVAL;
+                    break;
+                case Sides.LEFT:
+                    x = -GameObject.CONFIDENCE_INTERVAL;
+                    break;
+                case Sides.RIGHT:
+                    x = this.gameField.Width + GameObject.CONFIDENCE_INTERVAL;
+                    break;
+            }
+
+            return new Point(x, y);
         }
 
         /// <summary>
@@ -46,6 +83,15 @@ namespace Vaccinator.Game {
         /// <returns>Время для следующего интервала таймера</returns>
         private void setInterval() {
             this.genTimer.Interval = (INTERVAL + this.random.Next(-INTERVAL / 2, INTERVAL / 2)) * freq;
+        }
+
+        //====================================INNER TYPES=====================================
+
+        private enum Sides {
+            TOP,
+            BOTTOM,
+            LEFT,
+            RIGHT
         }
     }
 }
