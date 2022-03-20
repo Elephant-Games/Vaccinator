@@ -16,6 +16,7 @@ namespace Vaccinator.Game {
         [DllImport("user32.dll")]
         public static extern bool GetAsyncKeyState(int vKey);
 
+
         private const byte TICK = 20; //ms
 
         private static Game instance;
@@ -27,6 +28,14 @@ namespace Vaccinator.Game {
         private Dictionary< Type, LinkedList<GameObject> >[] gObjects = new Dictionary< Type, LinkedList<GameObject> >[2];
 
         private System.Timers.Timer updateTimer;
+
+        public LinkedList<GameObject> Players {
+            get {
+                return this.gObjects[0][typeof(Player)];
+            }
+        }
+
+        //======================================CONSTRUCTOR================================
 
         private Game(FormGame gameField) { //TODO: remake constructor
             this.gameField = gameField;
@@ -45,10 +54,6 @@ namespace Vaccinator.Game {
                 this.gObjects[0].Add(typeof(Player), new LinkedList<GameObject>());
                 this.gObjects[0][typeof(Player)].AddLast(new Player(this.gameField));
             }));
-            /*(new Thread(new ThreadStart( () => {
-
-                
-            }))).Start();*/
 
             //Generator init
             Generator.OnGenerated += AddGameObject;
@@ -59,9 +64,11 @@ namespace Vaccinator.Game {
 
             //Main game timer
             this.updateTimer = new System.Timers.Timer(TICK);
-            updateTimer.Elapsed += this.UpdateTimer_Elapsed;
+            this.updateTimer.Elapsed += Update;
             this.updateTimer.Start();
         }
+
+        //====================================PUBLIC=====================================
 
         public static Game GetInstance(object gameField = null) {
             if (instance == null) {
@@ -73,23 +80,42 @@ namespace Vaccinator.Game {
         }
 
         public void AddGameObject(GameObject gameObject) {
+            ActivityController.GetInstance().MRE_Pause.WaitOne(); //suspend thread
             if (!this.gObjects[0].ContainsKey(gameObject.GetType()))
                 this.gObjects[0].Add(gameObject.GetType(), new LinkedList<GameObject>());
             this.gObjects[0][gameObject.GetType()].AddLast(gameObject);
         }
 
-        private void UpdateTimer_Elapsed(object sender, ElapsedEventArgs e) {
+        public bool DeleteGameObject(GameObject gameObject) {
+            ActivityController.GetInstance().MRE_Pause.WaitOne();
+            if ( !this.gObjects[0].ContainsKey(gameObject.GetType()) )
+                return false;
+            this.gObjects[0][gameObject.GetType()].Remove(gameObject);
+            return true;
+        }
+
+        //=================================================PRIVATE=================================
+
+        private void Update(object sender, EventArgs args) {
             bool focused = true;
+            var aController = ActivityController.GetInstance();
+
             this.gameField.Invoke(new MethodInvoker( () => focused = this.gameField.Focused));
-            if (!focused)
-                return;
+
+            this.updateTimer.Stop();
+            aController.MRE_Pause.WaitOne(); //Suspend thread
+            aController.Pause(true);
 
             foreach (var item in this.gObjects[0]) {
-                //Console.WriteLine($"{item.Key} is subclass of IMoveable = {}");
-                if (typeof(IMoveable).IsAssignableFrom(item.Key))
+                if (typeof(Enemy).IsAssignableFrom(item.Key))
+                    foreach (var elem in item.Value)
+                        ((Enemy)elem).MoveTo(this.gObjects[0][typeof(Player)].First.Value.SpriteLocation);
+                else if (typeof(IMoveable).IsAssignableFrom(item.Key))
                     foreach (var elem in item.Value)
                         ((IMoveable)elem).Move();
             }
+            aController.Pause(false);
+            this.updateTimer.Start();
         }
     }
 }

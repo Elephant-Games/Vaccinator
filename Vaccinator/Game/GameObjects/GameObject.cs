@@ -34,6 +34,15 @@ namespace Vaccinator.Game.GameObjects {
                     value.X < -CONFIDENCE_INTERVAL ||
                     value.Y < -CONFIDENCE_INTERVAL
                     ) {
+                    if (this is Player) {
+                        /*this.gameField.Invoke( new MethodInvoker( () => {
+                            this.sprite.Location = new Point(
+                                this.sprite.Location.X - 2 * this.sprite.Location.X,
+                                this.sprite.Location.Y - 2 * this.sprite.Location.Y
+                            );
+                        }));*/ //TODO: tp character to other side of the field
+                        return;
+                    }
                     throw new PointOutOfRangeException("The point outside the confidence interval.", value);
                 }
                 this.gameField.Invoke(
@@ -73,12 +82,28 @@ namespace Vaccinator.Game.GameObjects {
         }*/
 
         /// <summary>
+        /// Рассчитывает расстояние до центра объекта GameObject
+        /// </summary>
+        /// <param name="obj">Другой объект</param>
+        /// <returns></returns>
+        public int DistanceTo(GameObject obj) {
+            if (obj.Equals(this)
+                || this.SpriteLocation.Equals(obj.SpriteLocation) )
+                return 0;
+
+            return (int)Math.Floor(Math.Sqrt(
+                Math.Pow(this.SpriteLocation.X - obj.SpriteLocation.X, 2)
+                + Math.Pow(this.SpriteLocation.Y - obj.SpriteLocation.Y, 2)));
+        }
+
+        /// <summary>
         /// Уничтожает текущий игровой объект.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void Destroy(object sender, EventArgs e) {
             this.sprite.Visible = false;
+            Game.GetInstance().DeleteGameObject(this);
         }
     }
 
