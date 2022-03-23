@@ -49,6 +49,7 @@
     <Compile Include="ActivityController.cs" />
     <Compile Include="CovidStat.cs" />
     <Compile Include="Exceptions\ParsingExceptions\InvalidUrlException.cs" />
+    <Compile Include="Exceptions\WindowExceptions\PointOutOfRangeException.cs" />
     <Compile Include="Exceptions\WindowExceptions\IncompleteInitException.cs" />
     <Compile Include="Fonts\Font.cs" />
     <Compile Include="Fonts\FontName.cs" />
@@ -58,12 +59,14 @@
     <Compile Include="Game\GameObjects\Character.cs" />
     <Compile Include="Game\GameObjects\Enemy.cs" />
     <Compile Include="Game\GameObjects\GameObject.cs" />
+    <Compile Include="Game\GameObjects\IMoveable.cs" />
     <Compile Include="Game\GameObjects\MBossEnemy.cs" />
+    <Compile Include="Game\GameObjects\Player.cs" />
     <Compile Include="Game\Generator.cs" />
-    <Compile Include="GUI\FormGame.cs">
+    <Compile Include="GUI\GameWindow\FormGame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\FormGame.Designer.cs">
+    <Compile Include="GUI\GameWindow\FormGame.Designer.cs">
       <DependentUpon>FormGame.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FormMain.cs">
@@ -89,7 +92,7 @@
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="GUI\FormGame.resx">
+    <EmbeddedResource Include="GUI\GameWindow\FormGame.resx">
       <DependentUpon>FormGame.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormMain.resx">
@@ -102,7 +105,7 @@
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -124,6 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\player_character_a.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\base_enemy-a.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

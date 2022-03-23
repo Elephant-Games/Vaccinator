@@ -10,8 +10,8 @@ using Vaccinator.Properties;
 
 namespace Vaccinator.Fonts {
     class Font {
-        public const float D_SIZE_MAIN_TEXT = 50f;
-        public const float D_SIZE_MENU_TEXT = 26f;
+        public const float D_SIZE_MAIN_TEXT = 38f;
+        public const float D_SIZE_MENU_TEXT = 20f;
 
         private static string path = Application.LocalUserAppDataPath + @"\GorgeousPixel.ttf";
         private static PrivateFontCollection fontCollect = new PrivateFontCollection();

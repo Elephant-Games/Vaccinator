@@ -4,6 +4,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Vaccinator.Exceptions.WindowExceptions;
 using Vaccinator.GUI;
+using Vaccinator.GUI.GameWindow;
 using Vaccinator.GUI.MainMenu;
 
 namespace Vaccinator {
@@ -19,12 +20,35 @@ namespace Vaccinator {
 
         private Stack<Type> guiStack;
 
+        private DateTime suspendTime;
+        private ManualResetEvent pause;
+
+        public FormMain CurrentWindow {
+            get {
+                return this.currentForm;
+            }
+        }
+
+        public ManualResetEvent MRE_Pause {
+            get {
+                return this.pause;
+            }
+        }
+
+        public DateTime MRE_Time {
+            get {
+                return this.suspendTime;
+            }
+        }
+
         private ActivityController() {
             this.guiStack = new Stack<Type>();
+            this.pause = new ManualResetEvent(true);
+            this.suspendTime = new DateTime(0);
 
             this.curFThread = new Thread(createParentWindow);
             this.curFThread.Start();
-            this.OpenWindow<FormMainMenu>();
+            this.OpenWindow<FormMainMenu>(); //start 
         }
 
         /// <summary>
@@ -63,13 +87,27 @@ namespace Vaccinator {
         /// <summary>
         /// Открытие окна в контейнере
         /// </summary>
-        /// <typeparam name="T">Класс окна, которое нужно открыть</typeparam>
+        /// <param name="type">Класс окна, которое нужно открыть</typeparam>
         public void OpenWindow(Type type) {
             initOpenWindow();
             this.currentForm = Activator.CreateInstance(type) as FormMain;
             endOpenWindow();
 
             this.guiStack.Push(type);
+        }
+
+        /// <summary>
+        /// Останавливает или возобновляет игру
+        /// </summary>
+        /// <param name="stopped">Если true, останавливает игру</param>
+        public void Pause(bool stopped) {
+            if (stopped) {
+                this.suspendTime = DateTime.Now;
+                this.pause.Reset();
+            } else {
+                this.suspendTime = new DateTime(0);
+                this.pause.Set();
+            }
         }
 
         private void initOpenWindow() {

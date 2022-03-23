@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 namespace Vaccinator.Game {
     class Settings {
         private static Settings instance;
-        private Settings() { }
 
         private byte difficult;
         private bool isTwoPlayers;
         private Keys[] keys;
         private bool lang;
+
+        private Settings() { }
 
         public static Settings GetInstance() {
             if (instance == null) {
