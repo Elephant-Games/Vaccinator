@@ -18,7 +18,7 @@ namespace Vaccinator.Game.GameObjects {
         private static Dictionary<Type, int> countObjects = new Dictionary<Type, int>(); //<class name, count objects>
 
         private FormGame gameField;
-        private PictureBox sprite;
+        private Panel sprite;
 
         //============================Containers=====================================
 
@@ -28,12 +28,8 @@ namespace Vaccinator.Game.GameObjects {
             }
 
             set {
-                if (
-                    value.X > this.gameField.Width + CONFIDENCE_INTERVAL ||
-                    value.Y > this.gameField.Height + CONFIDENCE_INTERVAL ||
-                    value.X < -CONFIDENCE_INTERVAL ||
-                    value.Y < -CONFIDENCE_INTERVAL
-                    ) {
+                if (!isHorisontalValid(value.X)
+                    || !isVerticalValid(value.Y)) {
                     if (this is Player) {
                         /*this.gameField.Invoke( new MethodInvoker( () => {
                             this.sprite.Location = new Point(
@@ -57,16 +53,16 @@ namespace Vaccinator.Game.GameObjects {
 
             //PictureBox initialization
             {
-                this.sprite = new PictureBox();
-                this.sprite.Image = skin;
-                ((System.ComponentModel.ISupportInitialize)(this.sprite)).BeginInit();
+                this.sprite = new Panel();
+                this.sprite.BackgroundImage = skin;
+                //((System.ComponentModel.ISupportInitialize)(this.sprite)).BeginInit();
                 //this.pictureBox1.Name = "pictureBox1";
                 this.sprite.Size = spriteSize;
                 this.sprite.TabIndex = 0;
                 this.sprite.TabStop = false;
 
                 this.gameField.Controls.Add(this.sprite);
-                this.sprite.SizeMode = PictureBoxSizeMode.Zoom;
+                this.sprite.BackgroundImageLayout = ImageLayout.Zoom;
                 this.sprite.Parent = this.gameField;
                 this.sprite.BackColor = Color.Transparent;
             }
@@ -104,6 +100,38 @@ namespace Vaccinator.Game.GameObjects {
         public void Destroy(object sender, EventArgs e) {
             this.sprite.Visible = false;
             Game.GetInstance().DeleteGameObject(this);
+        }
+
+        public void SetLeftCoord(int left) {
+            if (isHorisontalValid(left))
+                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Left = left));
+        }
+
+        public void SetTopCoord(int top) {
+            if (isVerticalValid(top))
+                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Top = top));
+        }
+
+        public void MoveToLeft(int lShift) {
+            this.SetLeftCoord(this.sprite.Location.X + lShift);
+        }
+
+        public void MoveToTop(int tShift) {
+            this.SetTopCoord(this.sprite.Location.Y + tShift);
+        }
+
+        //=====================================PRIVATE====================================
+
+        private bool isHorisontalValid(int x) {
+            return
+                x >= -CONFIDENCE_INTERVAL
+                && x <= this.gameField.Width + CONFIDENCE_INTERVAL;
+        }
+
+        private bool isVerticalValid(int y) {
+            return
+                y >= -CONFIDENCE_INTERVAL
+                && y <= this.gameField.Height + CONFIDENCE_INTERVAL;
         }
     }
 

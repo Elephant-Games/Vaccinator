@@ -50,9 +50,8 @@ namespace Vaccinator.Game.GameObjects {
             if (this.DistanceTo(Game.GetInstance().Players.First.Value) <= SAFE_AREA_INTERVAL) { //todo: temp solution
                 this.isMoving = false;
                 return;
-            } else {
+            } else
                 this.isMoving = true;
-            }
 
             if (!this.isMoving)
                 return;
@@ -66,13 +65,16 @@ namespace Vaccinator.Game.GameObjects {
 
                 double shift = this.getShift();
 
-                double nX = (shift * (delX / length)),
-                    nY = (shift * (delY / length));
+                int nX = (int) (shift * (delX / length)),
+                    nY = (int) (shift * (delY / length));
 
-                base.SpriteLocation = new Point( //todo: optimize
+
+                /*base.SpriteLocation = new Point( //todo: optimize
                     (int)Math.Floor(base.SpriteLocation.X + nX),
                     (int)Math.Floor(base.SpriteLocation.Y + nY)
-                );
+                );*/
+                base.MoveToLeft(nX);
+                base.MoveToTop(nY);
             });
         }
 

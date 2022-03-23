@@ -17,7 +17,7 @@ namespace Vaccinator.Game {
         public static extern bool GetAsyncKeyState(int vKey);
 
 
-        private const byte TICK = 20; //ms
+        private const byte TICK = 25; //ms
 
         private static Game instance;
 
@@ -102,7 +102,6 @@ namespace Vaccinator.Game {
 
             this.gameField.Invoke(new MethodInvoker( () => focused = this.gameField.Focused));
 
-            this.updateTimer.Stop();
             aController.MRE_Pause.WaitOne(); //Suspend thread
             aController.Pause(true);
 
@@ -115,7 +114,6 @@ namespace Vaccinator.Game {
                         ((IMoveable)elem).Move();
             }
             aController.Pause(false);
-            this.updateTimer.Start();
         }
     }
 }

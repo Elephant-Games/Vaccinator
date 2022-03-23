@@ -23,6 +23,7 @@ namespace Vaccinator.GUI.GameWindow {
             InitializeComponent();
             base.fontsInit(this);
 
+            base.CreateParams.ExStyle |= 0x02000000; //двойная буфферизация
 
             this.GotFocus += (s, a) => ActivityController.GetInstance().Pause(false);
             this.LostFocus += (s, a) => ActivityController.GetInstance().Pause(true);

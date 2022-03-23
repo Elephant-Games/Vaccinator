@@ -40,7 +40,8 @@ namespace Vaccinator.Game.GameObjects {
                     x += shift;
                 if (x == 0 && y == 0)
                     return;
-                base.SpriteLocation = new Point(base.SpriteLocation.X + x, base.SpriteLocation.Y + y);
+                base.MoveToLeft(x);
+                base.MoveToTop(y);
             });
         }
     }
