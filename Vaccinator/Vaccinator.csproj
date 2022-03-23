@@ -56,12 +56,14 @@
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\GameObjects\BaseEnemy.cs" />
     <Compile Include="Game\GameObjects\BossEnemy.cs" />
+    <Compile Include="Game\GameObjects\Bullet.cs" />
     <Compile Include="Game\GameObjects\Character.cs" />
     <Compile Include="Game\GameObjects\Enemy.cs" />
     <Compile Include="Game\GameObjects\GameObject.cs" />
     <Compile Include="Game\GameObjects\IMoveable.cs" />
     <Compile Include="Game\GameObjects\MBossEnemy.cs" />
     <Compile Include="Game\GameObjects\Player.cs" />
+    <Compile Include="Game\GameObjects\Stone.cs" />
     <Compile Include="Game\Generator.cs" />
     <Compile Include="GUI\GameWindow\FormGame.cs">
       <SubType>Form</SubType>

@@ -33,9 +33,6 @@ namespace Vaccinator.Game.GameObjects {
             this.bulPower = bulPower;
             this.health = health;
 
-            this.isMoving = false;
-
-            //TODO: temp
             this.isMoving = true;
             this.destination = new Point(0, 0);//base.SpriteLocation;
         }

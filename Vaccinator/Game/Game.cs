@@ -35,6 +35,19 @@ namespace Vaccinator.Game {
             }
         }
 
+        public int CountStones { 
+            get {
+                if (!this.gObjects[0].ContainsKey(typeof(Stone)))
+                    return 0;
+                int count = 0;
+                foreach (var item in this.gObjects[0][typeof(Stone)]) {
+                    if (!(item as Stone).IsDropped)
+                        count++;
+                }
+                return count;
+            }
+        } 
+
         //======================================CONSTRUCTOR================================
 
         private Game(FormGame gameField) { //TODO: remake constructor
@@ -61,6 +74,10 @@ namespace Vaccinator.Game {
             gen.StartGeneration<BaseEnemy>();
             this.generators[0].AddLast(gen);
 
+            //Generator stone
+            gen = new Generator(this.gameField, 2);
+            gen.StartGeneration<Stone>();
+            this.generators[0].AddLast(gen);
 
             //Main game timer
             this.updateTimer = new System.Timers.Timer(TICK);

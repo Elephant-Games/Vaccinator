@@ -44,6 +44,10 @@ namespace Vaccinator.Game {
         private void generate(object sender, ElapsedEventArgs e) {
             this.setInterval();
 
+            if (this.genType.IsEquivalentTo(typeof(Stone))
+                && Game.GetInstance().CountStones >= 10)
+                return;
+
             GameObject tempGObj = null;
 
             {
@@ -65,29 +69,34 @@ namespace Vaccinator.Game {
                 tempGObj = Activator.CreateInstance(this.genType, this.gameField) as GameObject;
                 tempGObj.SpriteLocation = this.getPoint();
             }));
-            Game.GetInstance().AddGameObject(tempGObj);
-            Console.WriteLine(tempGObj.GetType());
             OnGenerated(tempGObj);
         }
 
         private Point getPoint() {
-            int x = this.random.Next(-GameObject.CONFIDENCE_INTERVAL, this.gameField.Width + GameObject.CONFIDENCE_INTERVAL),
-                y = this.random.Next(-GameObject.CONFIDENCE_INTERVAL, this.gameField.Height + GameObject.CONFIDENCE_INTERVAL),
-                orient = this.random.Next(0, Enum.GetNames(typeof(Sides)).Length);
+            int x, y;
 
-            switch ( (Sides)orient ) {
-                case Sides.TOP:
-                    y = -GameObject.CONFIDENCE_INTERVAL;
-                    break;
-                case Sides.BOTTOM:
-                    y = this.gameField.Height + GameObject.CONFIDENCE_INTERVAL;
-                    break;
-                case Sides.LEFT:
-                    x = -GameObject.CONFIDENCE_INTERVAL;
-                    break;
-                case Sides.RIGHT:
-                    x = this.gameField.Width + GameObject.CONFIDENCE_INTERVAL;
-                    break;
+            if (this.genType.IsSubclassOf(typeof(Enemy))) {
+                x = this.random.Next(-GameObject.CONFIDENCE_INTERVAL, this.gameField.Width + GameObject.CONFIDENCE_INTERVAL);
+                y = this.random.Next(-GameObject.CONFIDENCE_INTERVAL, this.gameField.Height + GameObject.CONFIDENCE_INTERVAL);
+                int orient = this.random.Next(0, Enum.GetNames(typeof(Sides)).Length);
+
+                switch ((Sides)orient) {
+                    case Sides.TOP:
+                        y = -GameObject.CONFIDENCE_INTERVAL;
+                        break;
+                    case Sides.BOTTOM:
+                        y = this.gameField.Height + GameObject.CONFIDENCE_INTERVAL;
+                        break;
+                    case Sides.LEFT:
+                        x = -GameObject.CONFIDENCE_INTERVAL;
+                        break;
+                    case Sides.RIGHT:
+                        x = this.gameField.Width + GameObject.CONFIDENCE_INTERVAL;
+                        break;
+                }
+            } else {
+                x = this.random.Next(0, this.gameField.Width);
+                y = this.random.Next(0, this.gameField.Height);
             }
 
             return new Point(x, y);
@@ -98,7 +107,7 @@ namespace Vaccinator.Game {
         /// </summary>
         /// <returns>Время для следующего интервала таймера</returns>
         private void setInterval() {
-            this.genTimer.Interval = (INTERVAL + this.random.Next(-INTERVAL / 2, INTERVAL / 2)) * freq;
+            this.genTimer.Interval = (INTERVAL + this.random.Next(-INTERVAL / 2, INTERVAL / 2)) / freq;
         }
 
         //====================================INNER TYPES=====================================

@@ -10,7 +10,6 @@ namespace Vaccinator.Game.GameObjects {
     abstract class GameObject {
 
         protected static readonly Random random = new Random();
-        private static readonly Size spriteSize = new Size(48, 48);
 
         public const byte PIXELS_PER_TICK = 3; //px
         public const byte CONFIDENCE_INTERVAL = 50; //px
@@ -57,7 +56,8 @@ namespace Vaccinator.Game.GameObjects {
                 this.sprite.BackgroundImage = skin;
                 //((System.ComponentModel.ISupportInitialize)(this.sprite)).BeginInit();
                 //this.pictureBox1.Name = "pictureBox1";
-                this.sprite.Size = spriteSize;
+
+                this.sprite.Size = Sizes.GetSize(this);
                 this.sprite.TabIndex = 0;
                 this.sprite.TabStop = false;
 
@@ -132,6 +132,19 @@ namespace Vaccinator.Game.GameObjects {
             return
                 y >= -CONFIDENCE_INTERVAL
                 && y <= this.gameField.Height + CONFIDENCE_INTERVAL;
+        }
+
+        private class Sizes {
+            public static readonly Size CHARACTER = new Size(48, 48);
+            public static readonly Size BULLET = new Size(10, 10);
+
+            public static Size GetSize(GameObject obj) {
+                if (obj is Character)
+                    return CHARACTER;
+                else if (obj is Bullet)
+                    return BULLET;
+                return new Size();
+            }
         }
     }
 
