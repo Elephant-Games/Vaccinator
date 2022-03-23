@@ -45,6 +45,22 @@ namespace Vaccinator.Game {
             this.setInterval();
 
             GameObject tempGObj = null;
+
+            {
+                this.genTimer.Stop();
+                var aController = ActivityController.GetInstance();
+                var now = DateTime.Now;
+                aController.MRE_Pause.WaitOne(); //suspend thread
+
+                if (aController.MRE_Time.Ticks != 0) {
+                    this.genTimer.Interval = (now - aController.MRE_Time).TotalMilliseconds;
+                    this.genTimer.Start();
+                    return;
+                }
+
+                this.genTimer.Start();
+            }
+
             this.gameField.Invoke(new MethodInvoker(() => {
                 tempGObj = Activator.CreateInstance(this.genType, this.gameField) as GameObject;
                 tempGObj.SpriteLocation = this.getPoint();

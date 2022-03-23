@@ -22,23 +22,27 @@ namespace Vaccinator.Game.GameObjects {
             base.SpriteLocation = new Point(gameField.Width / 2, gameField.Height / 2);
         }
 
-        public override void Move() {
+        public override async void Move() {
             //todo: start work
-            int x = 0,
-                y = 0;
-            int shift = (int)base.getShift();
 
-            if (Game.GetAsyncKeyState( (int)Keys.Up ))
-                y -= shift;
-            if (Game.GetAsyncKeyState( (int)Keys.Down ))
-                y += shift;
-            if (Game.GetAsyncKeyState( (int)Keys.Left ))
-                x -= shift;
-            if (Game.GetAsyncKeyState( (int)Keys.Right ))
-                x += shift;
-            if (x == 0 && y == 0)
-                return;
-            base.SpriteLocation = new Point(base.SpriteLocation.X + x, base.SpriteLocation.Y + y);
+            await Task.Run(() => {
+                int x = 0,
+                y = 0;
+                int shift = (int)base.getShift();
+
+                if (Game.GetAsyncKeyState((int)Keys.Up))
+                    y -= shift;
+                if (Game.GetAsyncKeyState((int)Keys.Down))
+                    y += shift;
+                if (Game.GetAsyncKeyState((int)Keys.Left))
+                    x -= shift;
+                if (Game.GetAsyncKeyState((int)Keys.Right))
+                    x += shift;
+                if (x == 0 && y == 0)
+                    return;
+                base.MoveToLeft(x);
+                base.MoveToTop(y);
+            });
         }
     }
 }
