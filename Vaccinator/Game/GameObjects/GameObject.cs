@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Timers;
 using System.Windows.Forms;
 using Vaccinator.Exceptions.WindowExceptions;
 using Vaccinator.GUI;
@@ -13,13 +14,19 @@ namespace Vaccinator.Game.GameObjects {
 
         public const byte PIXELS_PER_TICK = 3; //px
         public const byte CONFIDENCE_INTERVAL = 50; //px
-        private const int GENERATE_TIME = 10_000; //default generate time
+
         private static Dictionary<Type, int> countObjects = new Dictionary<Type, int>(); //<class name, count objects>
 
-        private FormGame gameField;
+        protected FormGame gameField;
         private Panel sprite;
 
         //============================Containers=====================================
+
+        public Size SpriteSize {
+            get {
+                return this.sprite.Size;
+            }
+        }
 
         public Point SpriteLocation {
             get {
@@ -29,13 +36,7 @@ namespace Vaccinator.Game.GameObjects {
             set {
                 if (!isHorisontalValid(value.X)
                     || !isVerticalValid(value.Y)) {
-                    if (this is Player) {
-                        /*this.gameField.Invoke( new MethodInvoker( () => {
-                            this.sprite.Location = new Point(
-                                this.sprite.Location.X - 2 * this.sprite.Location.X,
-                                this.sprite.Location.Y - 2 * this.sprite.Location.Y
-                            );
-                        }));*/ //TODO: tp character to other side of the field
+                    if (this is Player) {//TODO: tp character to other side of the field
                         return;
                     }
                     throw new PointOutOfRangeException("The point outside the confidence interval.", value);
@@ -47,10 +48,10 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         //============================Constructors====================================
-        protected GameObject(FormGame gameField, Image skin) {
+        public GameObject(FormGame gameField, Image skin) {
             this.gameField = gameField;
 
-            //PictureBox initialization
+            //Panel initialization
             {
                 this.sprite = new Panel();
                 this.sprite.BackgroundImage = skin;
@@ -102,24 +103,63 @@ namespace Vaccinator.Game.GameObjects {
             Game.GetInstance().DeleteGameObject(this);
         }
 
+        /// <summary>
+        /// Проверка на пересечение двух объектов
+        /// </summary>
+        /// <param name="other">Второй объект</param>
+        /// <returns>true, если пересекаются</returns>
+        public bool IsIntersected(GameObject other) {
+            return this.sprite.Bounds.IntersectsWith(other.sprite.Bounds);
+        }
+
+        /// <summary>
+        /// Устанавливает координату x объекта GameObject
+        /// </summary>
+        /// <param name="left">Расстояние до точки от левого края окна</param>
         public void SetLeftCoord(int left) {
             if (isHorisontalValid(left))
                 this.gameField.Invoke(new MethodInvoker(() => this.sprite.Left = left));
         }
 
+
+        /// <summary>
+        /// Устанавливает координату y объекта GameObject
+        /// </summary>
+        /// <param name="top">Расстояние до точки от верхнего края окна</param>
         public void SetTopCoord(int top) {
             if (isVerticalValid(top))
                 this.gameField.Invoke(new MethodInvoker(() => this.sprite.Top = top));
         }
 
+        /// <summary>
+        /// Сдвигает объект влево на lShift пикселей
+        /// </summary>
+        /// <param name="lShift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
         public void MoveToLeft(int lShift) {
             this.SetLeftCoord(this.sprite.Location.X + lShift);
         }
 
+        /// <summary>
+        /// Сдвигает объект вниз на tShift пикселей
+        /// </summary>
+        /// <param name="tShift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
         public void MoveToTop(int tShift) {
             this.SetTopCoord(this.sprite.Location.Y + tShift);
         }
 
+        public bool IsVisible() {
+            return this.sprite.Visible;
+        }
+
+        //===============================================PROTECTED========================================
+
+        protected void Show() {
+            this.gameField.Invoke(new MethodInvoker(() => this.sprite.Visible = true));
+        }
+
+        protected void Hide() {
+            this.gameField.Invoke(new MethodInvoker(() => this.sprite.Visible = false));
+        }
         //=====================================PRIVATE====================================
 
         private bool isHorisontalValid(int x) {

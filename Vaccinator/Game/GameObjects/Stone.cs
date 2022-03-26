@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
-    class Stone : Bullet {
+    class Stone : Bullet, IPickable {
         private static readonly System.Drawing.Image SKIN = Properties.Resources.base_enemy_a;
 
         private bool isDropped;
+        private bool isPicked;
 
         public bool IsDropped {
             get {
@@ -34,6 +35,11 @@ namespace Vaccinator.Game.GameObjects {
         public override void Move() {
             if (this.isDropped)
                 base.Move();
+        }
+
+        public void Pick(Player player) {
+            this.Hide();
+            this.isPicked = true;
         }
     }
 }
