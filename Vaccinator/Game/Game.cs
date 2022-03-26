@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
+using Vaccinator.Exceptions.WindowExceptions;
 using Vaccinator.Game.GameObjects;
 using Vaccinator.GUI.GameWindow;
 
@@ -17,44 +18,44 @@ namespace Vaccinator.Game {
         public static extern bool GetAsyncKeyState(int vKey);
 
 
-        private const byte TICK = 25; //ms
+        public const byte TICK = 25; //ms
 
         private static Game instance;
 
         private FormGame gameField;
         private bool isGameOn;
-        
-        private LinkedList< Generator >[] generators = new LinkedList< Generator >[2];
-        private Dictionary< Type, LinkedList<GameObject> >[] gObjects = new Dictionary< Type, LinkedList<GameObject> >[2];
 
-        private System.Timers.Timer updateTimer;
+        private Player player;
+        private LinkedList<Stone> stones;
+        private LinkedList<Enemy> enemies;
+        private LinkedList<Generator> generators;
+        //private Dictionary< Type, LinkedList<GameObject> > gObjects = new Dictionary< Type, LinkedList<GameObject> >();
 
-        public LinkedList<GameObject> Players {
+        public Player Player {
             get {
-                return this.gObjects[0][typeof(Player)];
+                return this.player;
             }
         }
 
-        public int CountStones { 
+        public LinkedList<GameObject> Stones {
             get {
-                if (!this.gObjects[0].ContainsKey(typeof(Stone)))
-                    return 0;
-                int count = 0;
-                foreach (var item in this.gObjects[0][typeof(Stone)]) {
-                    if (!(item as Stone).IsDropped)
-                        count++;
-                }
-                return count;
+                return new LinkedList<GameObject>(this.stones);
             }
-        } 
+        }
+
+        public int CountStones {
+            get {
+                return this.stones.Count;
+            }
+        }
 
         //======================================CONSTRUCTOR================================
 
         private Game(FormGame gameField) { //TODO: remake constructor
             this.gameField = gameField;
-
-            this.generators[0] = new LinkedList< Generator >();
-            this.gObjects[0] = new Dictionary< Type, LinkedList<GameObject> >();
+            this.stones = new LinkedList<Stone>();
+            this.enemies = new LinkedList<Enemy>();
+            this.generators = new LinkedList<Generator>();
 
             DateTime beginTime = new DateTime();
             while (!this.gameField.IsInit) {
@@ -64,25 +65,19 @@ namespace Vaccinator.Game {
             }
 
             this.gameField.Invoke(new MethodInvoker(() => {
-                this.gObjects[0].Add(typeof(Player), new LinkedList<GameObject>());
-                this.gObjects[0][typeof(Player)].AddLast(new Player(this.gameField));
+                this.player = new Player(this.gameField);
             }));
 
             //Generator init
             Generator.OnGenerated += AddGameObject;
             Generator gen = new Generator(this.gameField);
             gen.StartGeneration<BaseEnemy>();
-            this.generators[0].AddLast(gen);
+            this.generators.AddLast(gen);
 
             //Generator stone
             gen = new Generator(this.gameField, 2);
             gen.StartGeneration<Stone>();
-            this.generators[0].AddLast(gen);
-
-            //Main game timer
-            this.updateTimer = new System.Timers.Timer(TICK);
-            this.updateTimer.Elapsed += Update;
-            this.updateTimer.Start();
+            this.generators.AddLast(gen);
         }
 
         //====================================PUBLIC=====================================
@@ -97,40 +92,37 @@ namespace Vaccinator.Game {
         }
 
         public void AddGameObject(GameObject gameObject) {
-            ActivityController.GetInstance().MRE_Pause.WaitOne(); //suspend thread
-            if (!this.gObjects[0].ContainsKey(gameObject.GetType()))
-                this.gObjects[0].Add(gameObject.GetType(), new LinkedList<GameObject>());
-            this.gObjects[0][gameObject.GetType()].AddLast(gameObject);
+            if (gameObject is Stone)
+                this.AddGameObject(gameObject as Stone);
+            else if (gameObject is Enemy)
+                this.AddGameObject(gameObject as Enemy);
+            else
+                throw new UndefinedGameObjectException($"GameObject {gameObject} of type {gameObject.GetType()} is not defined in the AddGameObject method");
+        }
+
+        private void AddGameObject(Stone stone) {
+            this.stones.AddLast(stone);
+        }
+
+        private void AddGameObject(Enemy enemy) {
+            this.enemies.AddLast(enemy);
         }
 
         public bool DeleteGameObject(GameObject gameObject) {
             ActivityController.GetInstance().MRE_Pause.WaitOne();
-            if ( !this.gObjects[0].ContainsKey(gameObject.GetType()) )
-                return false;
-            this.gObjects[0][gameObject.GetType()].Remove(gameObject);
-            return true;
+            if (gameObject is Stone)
+                return this.DeleteGameObject(gameObject as Stone);
+            else if (gameObject is Enemy)
+                return this.DeleteGameObject(gameObject as Enemy);
+            return false;
         }
 
-        //=================================================PRIVATE=================================
+        private bool DeleteGameObject(Stone stone) {
+            return this.stones.Remove(stone);
+        }
 
-        private void Update(object sender, EventArgs args) {
-            bool focused = true;
-            var aController = ActivityController.GetInstance();
-
-            this.gameField.Invoke(new MethodInvoker( () => focused = this.gameField.Focused));
-
-            aController.MRE_Pause.WaitOne(); //Suspend thread
-            aController.Pause(true);
-
-            foreach (var item in this.gObjects[0]) {
-                if (typeof(Enemy).IsAssignableFrom(item.Key))
-                    foreach (var elem in item.Value)
-                        ((Enemy)elem).MoveTo(this.gObjects[0][typeof(Player)].First.Value.SpriteLocation);
-                else if (typeof(IMoveable).IsAssignableFrom(item.Key))
-                    foreach (var elem in item.Value)
-                        ((IMoveable)elem).Move();
-            }
-            aController.Pause(false);
+        private bool DeleteGameObject(Enemy enemy) {
+            return this.enemies.Remove(enemy);
         }
     }
 }

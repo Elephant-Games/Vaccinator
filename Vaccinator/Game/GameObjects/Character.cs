@@ -13,6 +13,8 @@ namespace Vaccinator.Game.GameObjects {
         private const byte SAFE_JUMP_INTERVAL = 5; //px
         private const byte SAFE_AREA_INTERVAL = 68; //px
 
+        private readonly System.Timers.Timer updater = new System.Timers.Timer(Game.TICK);
+
         private byte speed;
         private byte shotSpeed;
         private byte bulSpeed;
@@ -35,44 +37,57 @@ namespace Vaccinator.Game.GameObjects {
 
             this.isMoving = true;
             this.destination = new Point(0, 0);//base.SpriteLocation;
+
+            this.updater.Elapsed += Move;
+            this.updater.Start();
         }
 
+
+        /// <summary>
+        /// Задаёт точку назначения и начинает перемещать объект в её сторону
+        /// </summary>
+        /// <param name="destination">Точка назначения</param>
         public void MoveTo(Point destination) {
             this.destination = destination;
+            this.isMoving = true;
             this.Move();
         }
 
-        public virtual async void Move() {
-
-            if (this.DistanceTo(Game.GetInstance().Players.First.Value) <= SAFE_AREA_INTERVAL) { //todo: temp solution
+        public virtual void Move() {
+            {
+                var aController = ActivityController.GetInstance();
+                if (!aController.MRE_Pause.WaitOne(0)) {
+                    this.updater.Stop();
+                    aController.MRE_Pause.WaitOne();
+                    this.updater.Start();
+                }
+            }
+            //if (this.DistanceTo(Game.GetInstance().Players.First.Value) <= SAFE_AREA_INTERVAL) { //todo: temp solution
+            if (this.IsIntersected(Game.GetInstance().Player)) {
                 this.isMoving = false;
                 return;
-            } else
-                this.isMoving = true;
+            }
 
+            double delX = this.destination.X - base.SpriteLocation.X;
+            double delY = this.destination.Y - base.SpriteLocation.Y;
+            double delXS = Math.Pow(delX, 2);
+            double delYS = Math.Pow(delY, 2);
+            double length = Math.Sqrt(delXS + delYS);
+
+            double shift = this.getShift();
+
+            int nX = (int) (shift * (delX / length)),
+                nY = (int) (shift * (delY / length));
+
+
+            base.MoveToLeft(nX);
+            base.MoveToTop(nY);
+        }
+
+        public virtual void Move(object sender, EventArgs args) {
             if (!this.isMoving)
                 return;
-
-            await Task.Run(() => {
-                double delX = this.destination.X - base.SpriteLocation.X;
-                double delY = this.destination.Y - base.SpriteLocation.Y;
-                double delXS = Math.Pow(delX, 2);
-                double delYS = Math.Pow(delY, 2);
-                double length = Math.Sqrt(delXS + delYS);
-
-                double shift = this.getShift();
-
-                int nX = (int) (shift * (delX / length)),
-                    nY = (int) (shift * (delY / length));
-
-
-                /*base.SpriteLocation = new Point( //todo: optimize
-                    (int)Math.Floor(base.SpriteLocation.X + nX),
-                    (int)Math.Floor(base.SpriteLocation.Y + nY)
-                );*/
-                base.MoveToLeft(nX);
-                base.MoveToTop(nY);
-            });
+            this.Move();
         }
 
         protected bool isSpriteCanJumpToPoint(Point point) {
