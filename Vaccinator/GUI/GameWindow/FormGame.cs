@@ -35,5 +35,11 @@ namespace Vaccinator.GUI.GameWindow {
         public void MoveControl(Control control, Point destination) {
             control.Location = destination;
         }
+
+        public void SetAmmoText(int count) {
+            this.Invoke(new MethodInvoker(() => {
+                labelAmmoC.Text = count.ToString();
+            }));
+        }
     }
 }

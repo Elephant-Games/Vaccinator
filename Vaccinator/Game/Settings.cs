@@ -21,13 +21,59 @@ namespace Vaccinator.Game {
             }
             return instance;
         }
-        
-        private class Keys { 
-            private System.Windows.Forms.Keys up { get { return this.up; } set { this.up = value; } }
-            private System.Windows.Forms.Keys down { get { return this.down; } set { this.down = value; } }
-            private System.Windows.Forms.Keys right { get { return this.right; } set { this.right = value; } }
-            private System.Windows.Forms.Keys left { get { return this.left; } set { this.left = value; } }
-            private System.Windows.Forms.Keys shot { get { return this.shot; } set { this.shot = value; } }
+
+        private class Keys {
+            private System.Windows.Forms.Keys up;
+            private System.Windows.Forms.Keys down;
+            private System.Windows.Forms.Keys right;
+            private System.Windows.Forms.Keys left;
+            private System.Windows.Forms.Keys shot;
+
+            public System.Windows.Forms.Keys Up {
+                get {
+                    return this.up;
+                }
+
+                set {
+                    this.up = value;
+                }
+            }
+            public System.Windows.Forms.Keys Down {
+                get {
+                    return this.down;
+                }
+
+                set {
+                    this.down = value;
+                }
+            }
+            public System.Windows.Forms.Keys Right {
+                get {
+                    return this.right;
+                }
+
+                set {
+                    this.right = value;
+                }
+            }
+            public System.Windows.Forms.Keys Left {
+                get {
+                    return this.left;
+                }
+
+                set {
+                    this.left = value;
+                }
+            }
+            public System.Windows.Forms.Keys Shot {
+                get {
+                    return this.shot;
+                }
+
+                set {
+                    this.shot = value;
+                }
+            }
 
             public Keys() {
 
