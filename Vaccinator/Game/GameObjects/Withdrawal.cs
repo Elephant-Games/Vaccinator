@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Vaccinator.Game.GameObjects {
-    class Withdrawal : GameObject {
+    class Withdrawal : Bonus {
     }
 }
