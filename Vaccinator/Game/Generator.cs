@@ -48,8 +48,7 @@ namespace Vaccinator.Game {
                 && Game.GetInstance().CountStones >= 10)
                 return;
 
-            GameObject tempGObj = null;
-
+            //suspend thread
             {
                 this.genTimer.Stop();
                 var aController = ActivityController.GetInstance();
@@ -65,6 +64,7 @@ namespace Vaccinator.Game {
                 this.genTimer.Start();
             }
 
+            GameObject tempGObj = null;
             this.gameField.Invoke(new MethodInvoker(() => {
                 tempGObj = Activator.CreateInstance(this.genType, this.gameField) as GameObject;
                 tempGObj.SpriteLocation = this.getPoint();

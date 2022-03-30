@@ -71,6 +71,16 @@ namespace Vaccinator.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap boss_enemy_b {
+            get {
+                object obj = ResourceManager.GetObject("boss_enemy_b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
         public static byte[] GorgeousPixel {

@@ -1,45 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vaccinator.Exceptions.GameObjectExceptions;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
-    class Stone : Bullet, IPickable {
+    class Stone : Bullet {
         private static readonly System.Drawing.Image SKIN = Properties.Resources.base_enemy_a;
-
-        private bool isDropped;
-        private bool isPicked;
-
-        public bool IsDropped {
-            get {
-                return this.isDropped;
-            }
-        }
 
         //=================================CONSTRUCTORS========================
 
-        public Stone(object gameField) : base(gameField as FormGame, SKIN, getPower()) {
-            this.isDropped = false;
+        public Stone(object gameField) : this(gameField as FormGame, 0) {
+
         }
 
-        public Stone(FormGame gameField, bool isDropped) : this(gameField) {
-            this.isDropped = isDropped;
+        public Stone(object gameField, byte speed) : base(gameField as FormGame, SKIN, getPower(), speed) {
+            if (!(this is ThrownStone))
+                base.updater.Dispose();
+        }
+
+        public override void Move() {
+            if (this is ThrownStone)
+                base.Move();
+            else
+                throw new NotMoveableObjectException($"Object {this} can't move in general!");
         }
 
         private static byte getPower() {
             return (byte)GameObject.random.Next(1, 3);
-        }
-
-        public override void Move() {
-            if (this.isDropped)
-                base.Move();
-        }
-
-        public void Pick(Player player) {
-            this.Hide();
-            this.isPicked = true;
         }
     }
 }

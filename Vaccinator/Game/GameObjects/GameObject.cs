@@ -18,9 +18,15 @@ namespace Vaccinator.Game.GameObjects {
         private static Dictionary<Type, int> countObjects = new Dictionary<Type, int>(); //<class name, count objects>
 
         protected FormGame gameField;
-        private Panel sprite;
+        private readonly Panel sprite;
 
         //============================Containers=====================================
+
+        public Panel Sprite {
+            get {
+                return this.sprite;
+            }
+        }
 
         public Size SpriteSize {
             get {
@@ -59,10 +65,11 @@ namespace Vaccinator.Game.GameObjects {
                 //this.pictureBox1.Name = "pictureBox1";
 
                 this.sprite.Size = Sizes.GetSize(this);
+                
                 this.sprite.TabIndex = 0;
                 this.sprite.TabStop = false;
 
-                this.gameField.Controls.Add(this.sprite);
+                this.gameField.Invoke(new MethodInvoker(() => this.gameField.Controls.Add(this.sprite)));
                 this.sprite.BackgroundImageLayout = ImageLayout.Zoom;
                 this.sprite.Parent = this.gameField;
                 this.sprite.BackColor = Color.Transparent;
@@ -98,9 +105,9 @@ namespace Vaccinator.Game.GameObjects {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void Destroy(object sender, EventArgs e) {
-            this.sprite.Visible = false;
+        public void Destroy(object sender = null, EventArgs e = null) {
             Game.GetInstance().DeleteGameObject(this);
+            this.gameField.Invoke(new MethodInvoker(() => this.gameField.Controls.Remove(this.sprite)));
         }
 
         /// <summary>
@@ -115,36 +122,36 @@ namespace Vaccinator.Game.GameObjects {
         /// <summary>
         /// Устанавливает координату x объекта GameObject
         /// </summary>
-        /// <param name="left">Расстояние до точки от левого края окна</param>
-        public void SetLeftCoord(int left) {
-            if (isHorisontalValid(left))
-                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Left = left));
+        /// <param name="x">Расстояние до точки от левого края окна</param>
+        public void SetXCoord(int x) {
+            if (isHorisontalValid(x))
+                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Left = x));
         }
 
 
         /// <summary>
         /// Устанавливает координату y объекта GameObject
         /// </summary>
-        /// <param name="top">Расстояние до точки от верхнего края окна</param>
-        public void SetTopCoord(int top) {
-            if (isVerticalValid(top))
-                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Top = top));
+        /// <param name="y">Расстояние до точки от верхнего края окна</param>
+        public void SetYCoord(int y) {
+            if (isVerticalValid(y))
+                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Top = y));
         }
 
         /// <summary>
         /// Сдвигает объект влево на lShift пикселей
         /// </summary>
-        /// <param name="lShift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
-        public void MoveToLeft(int lShift) {
-            this.SetLeftCoord(this.sprite.Location.X + lShift);
+        /// <param name="shift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
+        public void MoveByX(int shift) {
+            this.SetXCoord(this.sprite.Location.X + shift);
         }
 
         /// <summary>
         /// Сдвигает объект вниз на tShift пикселей
         /// </summary>
-        /// <param name="tShift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
-        public void MoveToTop(int tShift) {
-            this.SetTopCoord(this.sprite.Location.Y + tShift);
+        /// <param name="shift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
+        public void MoveByY(int shift) {
+            this.SetYCoord(this.sprite.Location.Y + shift);
         }
 
         public bool IsVisible() {
@@ -152,6 +159,10 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         //===============================================PROTECTED========================================
+
+        protected void SetPosition(Point position) {
+            this.gameField.Invoke(new MethodInvoker(() => this.sprite.Location = position));
+        }
 
         protected void Show() {
             this.gameField.Invoke(new MethodInvoker(() => this.sprite.Visible = true));

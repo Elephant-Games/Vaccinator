@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Vaccinator.GUI;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
@@ -15,12 +9,23 @@ namespace Vaccinator.Game.GameObjects {
             base(gameField, skin, speed, shotSpeed, bulSpeed, getBulletPower(bulPower), health) {
         }
 
-        private static byte getBulletPower(byte[] bulPow) {
-            return (byte)GameObject.random.Next(bulPow[0], bulPow[1]);
-        }
-
         public override void Move(object sender, EventArgs args) {
             base.MoveTo(Game.GetInstance().Player.SpriteLocation);
+        }
+
+        public override void Shot(Bullet bullet) {
+        }
+
+        public override void Move() {
+            if (this.IsIntersected(Game.GetInstance().Player)) {
+                base.isMoving = false;
+                return;
+            }
+            base.Move();
+        }
+
+        private static byte getBulletPower(byte[] bulPow) {
+            return (byte)GameObject.random.Next(bulPow[0], bulPow[1]);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Vaccinator {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var request = WebRequest.Create(REQUEST_URL);
             var response = request.GetResponse();
-            string json = (new StreamReader(response.GetResponseStream())).ReadToEnd();
+            var json = (new StreamReader(response.GetResponseStream())).ReadToEnd();
             
             for (int i = 0, index = 0; i < sicks.Length; ++i, ++index) {
                 index = json.IndexOf("sick", index);

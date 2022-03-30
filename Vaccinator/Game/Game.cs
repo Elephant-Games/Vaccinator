@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
-using Vaccinator.Exceptions.WindowExceptions;
+using Vaccinator.Exceptions.GameObjectExceptions;
 using Vaccinator.Game.GameObjects;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game {
     class Game {
-
-        [DllImport("user32.dll")]
-        public static extern bool GetKeyboardState(byte[] lpKeyState);
 
         [DllImport("user32.dll")]
         public static extern bool GetAsyncKeyState(int vKey);
@@ -51,13 +49,13 @@ namespace Vaccinator.Game {
 
         //======================================CONSTRUCTOR================================
 
-        private Game(FormGame gameField) { //TODO: remake constructor
+        private Game(FormGame gameField) {
             this.gameField = gameField;
             this.stones = new LinkedList<Stone>();
             this.enemies = new LinkedList<Enemy>();
             this.generators = new LinkedList<Generator>();
 
-            DateTime beginTime = new DateTime();
+            var beginTime = new DateTime();
             while (!this.gameField.IsInit) {
                 if ((beginTime - new DateTime()).TotalSeconds > 5)
                     throw new Exception("Форма не загружается!"); //todo: change to normal exception
@@ -70,7 +68,7 @@ namespace Vaccinator.Game {
 
             //Generator init
             Generator.OnGenerated += AddGameObject;
-            Generator gen = new Generator(this.gameField);
+            var gen = new Generator(this.gameField);
             gen.StartGeneration<BaseEnemy>();
             this.generators.AddLast(gen);
 
@@ -118,11 +116,21 @@ namespace Vaccinator.Game {
         }
 
         private bool DeleteGameObject(Stone stone) {
+            this.gameField.Invoke(new MethodInvoker( () => this.gameField.Controls.Remove(stone.Sprite)));
             return this.stones.Remove(stone);
         }
 
         private bool DeleteGameObject(Enemy enemy) {
+            this.gameField.Invoke(new MethodInvoker(() => this.gameField.Controls.Remove(enemy.Sprite)));
             return this.enemies.Remove(enemy);
+        }
+
+        public Enemy FindIntersectedEnemy(GameObject host) {
+            foreach (var enemy in this.enemies) {
+                if (host.IsIntersected(enemy))
+                    return enemy;
+            }
+            return null;
         }
     }
 }
