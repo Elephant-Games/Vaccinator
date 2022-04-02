@@ -4,26 +4,32 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
     class ThrownStone : Stone {
 
-        private const byte SPEED = 1;
-
-        public ThrownStone(FormGame gameField, Point spawn, Point destination) : base(gameField, SPEED) {
+        public ThrownStone(FormGame gameField, Point spawn, Point shift, byte power, byte speed) : base(gameField, power, speed) {
             this.SetPosition(spawn);
-            base.MoveTo(destination);
-
-            this.MovementHadEnded += this.EndMove;
+            this.shift = shift;
         }
 
-        public override void Move(object sender, EventArgs args) {
-            base.Move();
+        public override void Move() {
+            this.isEndMove();
+
+            this.gameField.Invoke(new MethodInvoker(() => {
+                this.Sprite.Left += shift.X;
+                this.Sprite.Top += shift.Y;
+            }));
+
+            this.findHited();
         }
 
-        private void EndMove() {
-            base.Destroy();
+        protected override void isEndMove() {
+            if (this.shift.X == 0 && this.shift.Y == 0)
+                this.Destroy();
+            base.isEndMove();
         }
     }
 }

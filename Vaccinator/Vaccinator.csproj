@@ -68,6 +68,7 @@
     <Compile Include="Game\GameObjects\Player.cs" />
     <Compile Include="Game\GameObjects\Stone.cs" />
     <Compile Include="Game\GameObjects\ThrownStone.cs" />
+    <Compile Include="Game\GameObjects\Vaccine.cs" />
     <Compile Include="Game\Generator.cs" />
     <Compile Include="GUI\GameWindow\FormGame.cs">
       <SubType>Form</SubType>

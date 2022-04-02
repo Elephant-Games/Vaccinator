@@ -88,6 +88,15 @@ namespace Vaccinator.Game.GameObjects {
             this.isMoving = false;
         }
 
+        public void StartUpdater() {
+            this.updater.Start();
+        }
+
+        public override void Destroy(object sender = null, EventArgs e = null) {
+            this.updater.Dispose();
+            base.Destroy(sender, e);
+        }
+
         protected double getShift() {
             if (this.shift == 0)
                 this.shift = this.speed * GameObject.PIXELS_PER_TICK;

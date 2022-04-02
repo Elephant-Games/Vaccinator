@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using Vaccinator.Exceptions.GameObjectExceptions;
 using Vaccinator.Exceptions.WindowExceptions;
 using Vaccinator.GUI;
 using Vaccinator.GUI.GameWindow;
@@ -105,9 +107,8 @@ namespace Vaccinator.Game.GameObjects {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void Destroy(object sender = null, EventArgs e = null) {
+        public virtual void Destroy(object sender = null, EventArgs e = null) {
             Game.GetInstance().DeleteGameObject(this);
-            this.gameField.Invoke(new MethodInvoker(() => this.gameField.Controls.Remove(this.sprite)));
         }
 
         /// <summary>
@@ -124,7 +125,7 @@ namespace Vaccinator.Game.GameObjects {
         /// </summary>
         /// <param name="x">Расстояние до точки от левого края окна</param>
         public void SetXCoord(int x) {
-            if (isHorisontalValid(x))
+            if (this.isHorisontalValid(x))
                 this.gameField.Invoke(new MethodInvoker(() => this.sprite.Left = x));
         }
 

@@ -30,6 +30,7 @@ namespace Vaccinator.Game.GameObjects {
 
         public override void Move() {
             //todo: start work
+            ActivityController.GetInstance().MRE_Pause.WaitOne();
             this.FindObjectForPicking();
 
             int x = 0,
@@ -50,56 +51,48 @@ namespace Vaccinator.Game.GameObjects {
                     this.lastDirection = new Point(x, y);
 
                 if (Game.GetAsyncKeyState((int)Keys.Space))
-                     this.Shot(this.lastDirection); //todo: test
+                    this.Shot(this.lastDirection); //todo: test
             })).Start();
+
 
             if (x == 0 && y == 0)
                 return;
 
-            base.MoveByX(x);
-            base.MoveByY(y);
+            this.MoveByX(x);
+            this.MoveByY(y);
         }
 
         public async void FindObjectForPicking() {
             await Task.Run(() => {
-                if (countStones >= 10)
+                if (this.countStones >= 10)
                     return;
 
                 foreach (var stone in Game.GetInstance().Stones) {
                     if (this.IsIntersected(stone) && stone.IsVisible()) {
-                        Game.GetInstance().DeleteGameObject(stone);
+                        stone.Destroy();
                         ++this.countStones;
                     }
                 }
 
-                base.gameField.SetAmmoText(this.countStones);
+                this.gameField.SetAmmoText(this.countStones);
             });
         }
 
-        public override void Shot(Bullet bullet) {
+        protected override bool Shot(Bullet bullet) {
+            if (!base.Shot(bullet))
+                return false;
             --this.countStones;
+            return true;
         }
 
-        private void Shot(Point direction) {
-            if (this.countStones == 0)
+        private void Shot(Point shift) {
+            if (this.countStones == 0 || !this.canShot)
                 return;
 
-            direction.X = CalcDistanceToBorder(direction.X, this.SpriteLocation.X, this.gameField.Width);
-            direction.Y = CalcDistanceToBorder(direction.Y, this.SpriteLocation.Y, this.gameField.Height);
-
-            this.Shot(new ThrownStone(this.gameField, this.SpriteLocation, direction));
-        }
-
-        private static int CalcDistanceToBorder(int shift, int coord, int formSize) { //todo: move to other class
-            int adder = 0;
-            if (shift != 0) {
-                adder = formSize - coord;
-                if (shift < 0)
-                    adder *= -1;
-            } else {
-                adder = coord;
-            }
-            return shift + adder;
+            shift.X *= this.BulSpeed;
+            shift.Y *= this.BulSpeed;
+            
+            this.Shot(new ThrownStone(this.gameField, this.SpriteLocation, shift, this.BulPower, this.BulSpeed));
         }
     }
 }

@@ -82,7 +82,7 @@ namespace Vaccinator.Game {
 
         public static Game GetInstance(object gameField = null) {
             if (instance == null) {
-                if (gameField == null && instance.gameField == null)
+                if (gameField == null)
                     throw new ArgumentNullException("GameField must have a non-zero value!");
                 instance = new Game(gameField as FormGame);
             }
@@ -98,31 +98,19 @@ namespace Vaccinator.Game {
                 throw new UndefinedGameObjectException($"GameObject {gameObject} of type {gameObject.GetType()} is not defined in the AddGameObject method");
         }
 
-        private void AddGameObject(Stone stone) {
-            this.stones.AddLast(stone);
-        }
-
-        private void AddGameObject(Enemy enemy) {
-            this.enemies.AddLast(enemy);
-        }
-
-        public bool DeleteGameObject(GameObject gameObject) {
+        public void DeleteGameObject(GameObject gameObject) {
             ActivityController.GetInstance().MRE_Pause.WaitOne();
-            if (gameObject is Stone)
-                return this.DeleteGameObject(gameObject as Stone);
+
+            if (gameObject is Stone && !(gameObject is ThrownStone))
+                this.DeleteGameObject(gameObject as Stone);
             else if (gameObject is Enemy)
-                return this.DeleteGameObject(gameObject as Enemy);
-            return false;
-        }
+                this.DeleteGameObject(gameObject as Enemy);
 
-        private bool DeleteGameObject(Stone stone) {
-            this.gameField.Invoke(new MethodInvoker( () => this.gameField.Controls.Remove(stone.Sprite)));
-            return this.stones.Remove(stone);
-        }
-
-        private bool DeleteGameObject(Enemy enemy) {
-            this.gameField.Invoke(new MethodInvoker(() => this.gameField.Controls.Remove(enemy.Sprite)));
-            return this.enemies.Remove(enemy);
+            this.gameField.Invoke(new MethodInvoker(() => {
+                gameObject.Sprite.Parent = null;
+                gameObject.Sprite.Dispose();
+                this.gameField.Controls.Remove(gameObject.Sprite);
+            }));
         }
 
         public Enemy FindIntersectedEnemy(GameObject host) {
@@ -131,6 +119,25 @@ namespace Vaccinator.Game {
                     return enemy;
             }
             return null;
+        }
+
+        //====================================================PRIVATE================================================
+
+        private void AddGameObject(Stone stone) {
+            this.stones.AddLast(stone);
+        }
+
+        private void AddGameObject(Enemy enemy) {
+            this.enemies.AddLast(enemy);
+        }
+
+        private void DeleteGameObject(Stone stone) {
+            this.stones.Remove(stone);
+            Console.WriteLine(new System.Diagnostics.StackTrace());
+        }
+
+        private void DeleteGameObject(Enemy enemy) {
+            this.enemies.Remove(enemy);
         }
     }
 }

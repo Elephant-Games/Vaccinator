@@ -13,13 +13,13 @@ namespace Vaccinator.Game.GameObjects {
 
         //=================================CONSTRUCTORS========================
 
-        public Stone(object gameField) : this(gameField as FormGame, 0) {
+        public Stone(object gameField) : this(gameField as FormGame, 0, 0) {
 
         }
 
-        public Stone(object gameField, byte speed) : base(gameField as FormGame, SKIN, getPower(), speed) {
+        public Stone(object gameField, byte power, byte speed) : base(gameField as FormGame, SKIN, power, speed) {
             if (!(this is ThrownStone))
-                base.updater.Dispose();
+                this.updater.Dispose();
         }
 
         public override void Move() {
@@ -29,8 +29,11 @@ namespace Vaccinator.Game.GameObjects {
                 throw new NotMoveableObjectException($"Object {this} can't move in general!");
         }
 
-        private static byte getPower() {
-            return (byte)GameObject.random.Next(1, 3);
+        protected override void findHited() {
+            if (this is ThrownStone)
+                base.findHited();
+            else
+                throw new NotMoveableObjectException($"Object {this} isn't a bullet!");
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Vaccinator.GUI.GameWindow {
 
         public void SetAmmoText(int count) {
             this.Invoke(new MethodInvoker(() => {
-                labelAmmoC.Text = count.ToString();
+                labelAmmoC.Text = "10";//count.ToString();
             }));
         }
     }

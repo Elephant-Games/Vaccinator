@@ -10,9 +10,28 @@ namespace Vaccinator.Game.GameObjects {
         private byte bulSpeed;
         private byte bulPower;
         private byte health;
-        
-        //==========================================ABSTRACT=============================================
-        public abstract void Shot(Bullet bullet);
+
+        protected bool canShot = true;
+
+        //==========================================GETTERS/SETTERS======================================
+
+        public byte ShotSpeed {
+            get {
+                return this.shotSpeed;
+            }
+        }
+
+        public byte BulSpeed {
+            get {
+                return this.bulSpeed;
+            }
+        }
+
+        public byte BulPower {
+            get {
+                return this.bulPower;
+            }
+        }
 
         //=========================================CONSTRUCTOR===========================================
         protected Character(FormGame gameField, Image sprite, byte speed, byte shotSpeed, byte bulSpeed, byte bulPower, byte health) :
@@ -24,13 +43,35 @@ namespace Vaccinator.Game.GameObjects {
             this.health = health;
         }
 
-        public void Hit(Bullet bullet) {
+        public void Hit(Bullet bullet) {    
+            /*if (!bullet.IsActive)
+                return;*/
+            if (!(this is Player) && (bullet is Vaccine))
+                return;
+
             if (this.health < bullet.Power) {
-                if (this is Player) { } //todo: gameover
+                if (this is Player)
+                    Program.Exit();
                 this.Destroy();
             }
-            this.health -= bullet.Power;
-            bullet.Destroy();
+            else
+                this.health -= bullet.Power;
+        }
+
+        protected virtual bool Shot(Bullet bullet) {
+            if (!this.canShot) {
+                return false;
+            }
+            this.canShot = false;
+
+            var timer = new System.Timers.Timer();
+            timer.Interval = this.shotSpeed * 1000;
+            timer.Elapsed += (s, a) => {
+                this.canShot = true;
+                timer.Dispose();
+            };
+            timer.Start();
+            return true;
         }
 
         protected bool isSpriteCanJumpToPoint(Point point) {

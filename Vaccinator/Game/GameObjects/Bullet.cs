@@ -4,12 +4,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
     abstract class Bullet : MovingObject {
 
         protected byte power;
+        protected Point shift;
 
         //=======================================GETTERS/SETTERS=============================================
 
@@ -24,19 +26,29 @@ namespace Vaccinator.Game.GameObjects {
         public Bullet(FormGame gameField, System.Drawing.Image skin, byte power, byte speed)
             : base(gameField, skin, speed) {
             this.power = power;
-
-            base.updater.Start();
         }
 
         public override void Move() {
+            this.findHited();
+            this.isEndMove();
             base.Move();
-            this.FindHited();
         }
 
-        protected async void FindHited() {
+        protected virtual void isEndMove() {
+            if (this.SpriteLocation.X < 0 || this.SpriteLocation.X > this.gameField.Width
+                || this.SpriteLocation.Y < 0 || this.SpriteLocation.Y > this.gameField.Height) {
+                
+                this.Destroy();
+            }
+        }
+
+        public override void Destroy(object sender = null, EventArgs args = null) {
+            base.Destroy(sender, args);
+        }
+
+        protected async virtual void findHited() {
             await Task.Run(() => {
-                var game = Game.GetInstance();
-                Enemy enemy = game.FindIntersectedEnemy(this);
+                var enemy = Game.GetInstance().FindIntersectedEnemy(this);
                 if (enemy != null) {
                     enemy.Hit(this);
                     this.Destroy();
