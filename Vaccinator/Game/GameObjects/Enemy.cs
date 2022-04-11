@@ -7,8 +7,8 @@ namespace Vaccinator.Game.GameObjects {
 
         private System.Timers.Timer shoter = new System.Timers.Timer();
 
-        protected Enemy(FormGame gameField, Image skin, byte speed, byte shotSpeed, byte bulSpeed, byte[] bulPower, byte health) :
-            base(gameField, skin, speed, shotSpeed, bulSpeed, getBulletPower(bulPower), health) {
+        protected Enemy(FormGame gameField, Point spawn, Image skin, byte speed, byte shotSpeed, byte bulSpeed, byte[] bulPower, byte health) :
+            base(gameField, spawn, skin, speed, shotSpeed, bulSpeed, getBulletPower(bulPower), health) {
 
             this.shoter.Interval = this.ShotSpeed * 1000;
             this.shoter.Elapsed += Shot;
@@ -20,7 +20,19 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         protected void Shot(object sender, EventArgs args) {
+            var aController = ActivityController.GetInstance();
+            //suspend thread
+            if (!aController.MRE_Pause.WaitOne(0)) {
+                var now = DateTime.Now;
+                this.shoter.Stop();
+                aController.MRE_Pause.WaitOne();
+                this.shoter.Interval = (now - aController.MRE_Time).TotalMilliseconds;
+                this.shoter.Start();
+                return;
+            }
+
             new Vaccine(this.gameField, this.SpriteLocation, Game.GetInstance().Player.SpriteLocation, this.BulPower, this.BulSpeed);
+            this.shoter.Interval = this.ShotSpeed * 1000;
         }
 
         public override void Move() {

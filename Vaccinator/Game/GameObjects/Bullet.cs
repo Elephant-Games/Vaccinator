@@ -23,8 +23,8 @@ namespace Vaccinator.Game.GameObjects {
 
         //=========================================CONSTRUCTORS==============================================
         
-        public Bullet(FormGame gameField, System.Drawing.Image skin, byte power, byte speed)
-            : base(gameField, skin, speed) {
+        public Bullet(FormGame gameField, Point spawn, Image skin, byte power, byte speed)
+            : base(gameField, spawn, skin, speed) {
             this.power = power;
         }
 

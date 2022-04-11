@@ -11,8 +11,7 @@ namespace Vaccinator.Game.GameObjects {
 
         public static readonly Image SKIN = Properties.Resources.base_enemy_a;
 
-        public Vaccine(FormGame gameField, Point spawn, Point destination, byte power, byte speed) : base(gameField, SKIN, power, speed) {
-            this.SetPosition(spawn);
+        public Vaccine(FormGame gameField, Point spawn, Point destination, byte power, byte speed) : base(gameField, spawn, SKIN, power, speed) {
             this.getRealDestination(ref destination);
             this.MoveTo(destination);
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using Vaccinator.Exceptions.GameObjectExceptions;
 using Vaccinator.GUI.GameWindow;
 
@@ -13,11 +8,11 @@ namespace Vaccinator.Game.GameObjects {
 
         //=================================CONSTRUCTORS========================
 
-        public Stone(object gameField) : this(gameField as FormGame, 0, 0) {
+        public Stone(params object[] args) : this(args[0] as FormGame, (Point) args[1], 0, 0) {
 
         }
 
-        public Stone(object gameField, byte power, byte speed) : base(gameField as FormGame, SKIN, power, speed) {
+        public Stone(FormGame gameField, Point spawn, byte power, byte speed) : base(gameField, spawn, SKIN, power, speed) {
             if (!(this is ThrownStone))
                 this.updater.Dispose();
         }

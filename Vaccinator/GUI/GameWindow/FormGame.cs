@@ -1,44 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System.Drawing;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Vaccinator.GUI.GameWindow {
     public partial class FormGame : FormMain {
-        private Thread game;
+        private Thread gameThread;
 
-        public Thread Game {
+        public Thread GameThread {
             get {
-                return this.game;
+                return this.gameThread;
+            }
+        }
+
+        public int TopBarHeight {
+            get {
+                return this.Height;
             }
         }
 
         public FormGame() {
             InitializeComponent();
-            base.fontsInit(this);
+            this.fontsInit(this);
 
-            base.CreateParams.ExStyle |= 0x02000000; //двойная буфферизация
+            this.CreateParams.ExStyle |= 0x02000000; //двойная буфферизация
 
             this.GotFocus += (s, a) => ActivityController.GetInstance().Pause(false);
             this.LostFocus += (s, a) => ActivityController.GetInstance().Pause(true);
 
-            game = new Thread(new ParameterizedThreadStart( (object o) => Vaccinator.Game.Game.GetInstance(o) ));
-            game.Start(this);
-        }
-
-        public void MoveControl(Control control, Point destination) {
-            control.Location = destination;
+            gameThread = new Thread(new ParameterizedThreadStart( (object o) => Vaccinator.Game.Game.GetInstance(o) ));
+            gameThread.Start(this);
         }
 
         public void SetAmmoText(int count) {
             this.Invoke(new MethodInvoker(() => {
-                labelAmmoC.Text = "10";//count.ToString();
+                labelAmmoC.Text = count.ToString();
             }));
         }
     }

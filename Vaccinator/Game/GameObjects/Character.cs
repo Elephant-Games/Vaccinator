@@ -34,8 +34,8 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         //=========================================CONSTRUCTOR===========================================
-        protected Character(FormGame gameField, Image sprite, byte speed, byte shotSpeed, byte bulSpeed, byte bulPower, byte health) :
-            base(gameField, sprite, speed) {
+        protected Character(FormGame gameField, Point spawn, Image skin, byte speed, byte shotSpeed, byte bulSpeed, byte bulPower, byte health) :
+            base(gameField, spawn, skin, speed) {
             
             this.shotSpeed = shotSpeed;
             this.bulSpeed = bulSpeed;

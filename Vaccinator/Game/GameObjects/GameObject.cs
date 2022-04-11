@@ -42,9 +42,9 @@ namespace Vaccinator.Game.GameObjects {
             }
 
             set {
-                if (!isHorisontalValid(value.X)
-                    || !isVerticalValid(value.Y)) {
-                    if (this is Player) {//TODO: tp character to other side of the field
+                if (!isHorisontalValid(value.X, this.GetType())
+                    || !isVerticalValid(value.Y, this.GetType())) {
+                    if (this is Player || this is Bullet) {//TODO: tp character to other side of the field
                         return;
                     }
                     throw new PointOutOfRangeException("The point outside the confidence interval.", value);
@@ -56,8 +56,9 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         //============================Constructors====================================
-        public GameObject(FormGame gameField, Image skin) {
+        public GameObject(FormGame gameField, Point spawn, Image skin) {
             this.gameField = gameField;
+
 
             //Panel initialization
             {
@@ -67,15 +68,18 @@ namespace Vaccinator.Game.GameObjects {
                 //this.pictureBox1.Name = "pictureBox1";
 
                 this.sprite.Size = Sizes.GetSize(this);
-                
+
                 this.sprite.TabIndex = 0;
                 this.sprite.TabStop = false;
-
-                this.gameField.Invoke(new MethodInvoker(() => this.gameField.Controls.Add(this.sprite)));
                 this.sprite.BackgroundImageLayout = ImageLayout.Zoom;
-                this.sprite.Parent = this.gameField;
                 this.sprite.BackColor = Color.Transparent;
             }
+
+            this.gameField.Invoke(new MethodInvoker(() => {
+                this.sprite.Parent = this.gameField;
+                this.gameField.Controls.Add(this.sprite);
+                this.sprite.Location = spawn;
+            }));
 
             if (!countObjects.ContainsKey(this.GetType()))
                 countObjects.Add(this.GetType(), 1);
@@ -120,13 +124,25 @@ namespace Vaccinator.Game.GameObjects {
             return this.sprite.Bounds.IntersectsWith(other.sprite.Bounds);
         }
 
+        public void SetXYCoords(Point coords) {
+            this.SetXYCoords(coords.X, coords.Y);
+        }
+
+        public void SetXYCoords(int x, int y) {
+            if (this.isHorisontalValid(x) && this.isVerticalValid(y)) {
+                this.gameField.Invoke(new MethodInvoker(() => {
+                    this.sprite.Left = x;
+                    this.sprite.Top = y;
+                }));
+            }
+        }
+
         /// <summary>
         /// Устанавливает координату x объекта GameObject
         /// </summary>
         /// <param name="x">Расстояние до точки от левого края окна</param>
         public void SetXCoord(int x) {
-            if (this.isHorisontalValid(x))
-                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Left = x));
+            this.SetXYCoords(x, 0);
         }
 
 
@@ -135,8 +151,11 @@ namespace Vaccinator.Game.GameObjects {
         /// </summary>
         /// <param name="y">Расстояние до точки от верхнего края окна</param>
         public void SetYCoord(int y) {
-            if (isVerticalValid(y))
-                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Top = y));
+            this.SetXYCoords(0, y);
+        }
+
+        public void MoveByXY(int shiftX, int shiftY) {
+            this.SetXYCoords(this.SpriteLocation.X + shiftX, this.SpriteLocation.Y + shiftY);
         }
 
         /// <summary>
@@ -161,10 +180,6 @@ namespace Vaccinator.Game.GameObjects {
 
         //===============================================PROTECTED========================================
 
-        protected void SetPosition(Point position) {
-            this.gameField.Invoke(new MethodInvoker(() => this.sprite.Location = position));
-        }
-
         protected void Show() {
             this.gameField.Invoke(new MethodInvoker(() => this.sprite.Visible = true));
         }
@@ -174,16 +189,28 @@ namespace Vaccinator.Game.GameObjects {
         }
         //=====================================PRIVATE====================================
 
-        private bool isHorisontalValid(int x) {
-            return
-                x >= -CONFIDENCE_INTERVAL
-                && x <= this.gameField.Width + CONFIDENCE_INTERVAL;
+        private bool isHorisontalValid(int x, Type type = null) {
+            if (type != null && !type.IsSubclassOf(typeof(Bullet)) && !type.IsEquivalentTo(typeof(Player))) {
+                return
+                    x >= -CONFIDENCE_INTERVAL
+                    && x <= this.gameField.Width + CONFIDENCE_INTERVAL;
+            } else {
+                return
+                    x >= 0
+                    && x <= this.gameField.Width;
+            }
         }
 
-        private bool isVerticalValid(int y) {
-            return
-                y >= -CONFIDENCE_INTERVAL
-                && y <= this.gameField.Height + CONFIDENCE_INTERVAL;
+        private bool isVerticalValid(int y, Type type = null) {
+            if (type != null && !type.IsSubclassOf(typeof(Bullet)) && !type.IsEquivalentTo(typeof(Player))) {
+                return
+                    y >= -CONFIDENCE_INTERVAL
+                    && y <= this.gameField.Height + CONFIDENCE_INTERVAL;
+            } else {
+                return
+                    y >= this.gameField.TopBarHeight
+                    && y <= this.gameField.Height;
+            }
         }
 
         private class Sizes {

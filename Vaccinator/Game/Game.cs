@@ -6,17 +6,19 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using Vaccinator.Exceptions.GameObjectExceptions;
+using Vaccinator.Exceptions.WindowExceptions;
 using Vaccinator.Game.GameObjects;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game {
-    class Game {
+    class Game { 
 
+        public const byte TICK = 25; //ms
+
+        
         [DllImport("user32.dll")]
         public static extern bool GetAsyncKeyState(int vKey);
 
-
-        public const byte TICK = 25; //ms
 
         private static Game instance;
 
@@ -28,6 +30,8 @@ namespace Vaccinator.Game {
         private LinkedList<Enemy> enemies;
         private LinkedList<Generator> generators;
         //private Dictionary< Type, LinkedList<GameObject> > gObjects = new Dictionary< Type, LinkedList<GameObject> >();
+
+        //======================================GETTERS/SETTERS==================================
 
         public Player Player {
             get {
@@ -57,14 +61,12 @@ namespace Vaccinator.Game {
 
             var beginTime = new DateTime();
             while (!this.gameField.IsInit) {
-                if ((beginTime - new DateTime()).TotalSeconds > 5)
-                    throw new Exception("Форма не загружается!"); //todo: change to normal exception
-                Thread.Sleep(50);
+                if ((beginTime - new DateTime()).TotalMilliseconds > ActivityController.MAX_WAIT_FORM_TIME)
+                    throw new IncompleteInitException("Form waiting time exceeded!");
+                Thread.Sleep(ActivityController.INTERVAL_FOR_CHECKING_FORM);
             }
-
-            this.gameField.Invoke(new MethodInvoker(() => {
-                this.player = new Player(this.gameField);
-            }));
+                
+            this.player = new Player(this.gameField, this.getCenterField());
 
             //Generator init
             Generator.OnGenerated += AddGameObject;
@@ -91,9 +93,9 @@ namespace Vaccinator.Game {
 
         public void AddGameObject(GameObject gameObject) {
             if (gameObject is Stone)
-                this.AddGameObject(gameObject as Stone);
+                this.addGameObject(gameObject as Stone);
             else if (gameObject is Enemy)
-                this.AddGameObject(gameObject as Enemy);
+                this.addGameObject(gameObject as Enemy);
             else
                 throw new UndefinedGameObjectException($"GameObject {gameObject} of type {gameObject.GetType()} is not defined in the AddGameObject method");
         }
@@ -102,9 +104,9 @@ namespace Vaccinator.Game {
             ActivityController.GetInstance().MRE_Pause.WaitOne();
 
             if (gameObject is Stone && !(gameObject is ThrownStone))
-                this.DeleteGameObject(gameObject as Stone);
+                this.deleteGameObject(gameObject as Stone);
             else if (gameObject is Enemy)
-                this.DeleteGameObject(gameObject as Enemy);
+                this.deleteGameObject(gameObject as Enemy);
 
             this.gameField.Invoke(new MethodInvoker(() => {
                 gameObject.Sprite.Parent = null;
@@ -123,21 +125,27 @@ namespace Vaccinator.Game {
 
         //====================================================PRIVATE================================================
 
-        private void AddGameObject(Stone stone) {
+        private void addGameObject(Stone stone) {
             this.stones.AddLast(stone);
         }
 
-        private void AddGameObject(Enemy enemy) {
+        private void addGameObject(Enemy enemy) {
             this.enemies.AddLast(enemy);
         }
 
-        private void DeleteGameObject(Stone stone) {
+        private void deleteGameObject(Stone stone) {
             this.stones.Remove(stone);
-            Console.WriteLine(new System.Diagnostics.StackTrace());
         }
 
-        private void DeleteGameObject(Enemy enemy) {
+        private void deleteGameObject(Enemy enemy) {
             this.enemies.Remove(enemy);
+        }
+
+        private Point getCenterField() {
+            return new Point(
+                this.gameField.Width / 2,
+                this.gameField.Height / 2
+            );
         }
     }
 }

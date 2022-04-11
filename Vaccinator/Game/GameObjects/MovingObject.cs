@@ -26,7 +26,9 @@ namespace Vaccinator.Game.GameObjects {
 
         //===============================================CONSTRUCTORS=================================================================
 
-        public MovingObject(FormGame gameField, Image sprite, byte speed) : base(gameField, sprite) {
+        public MovingObject(FormGame gameField, Point spawn, Image skin, byte speed)
+            : base(gameField, spawn, skin) {
+            
             this.speed = speed;
             this.shift = 0;
             this.isMoving = true;//base.SpriteLocation;
@@ -73,8 +75,7 @@ namespace Vaccinator.Game.GameObjects {
                 nY = (int)(shift * (delY / length));
 
 
-            base.MoveByX(nX);
-            base.MoveByY(nY);
+            this.MoveByXY(nX, nY);
         }
 
         public virtual void Move(object sender, EventArgs args) {

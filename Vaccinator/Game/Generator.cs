@@ -64,11 +64,7 @@ namespace Vaccinator.Game {
                 this.genTimer.Start();
             }
 
-            GameObject tempGObj = null;
-            this.gameField.Invoke(new MethodInvoker(() => {
-                tempGObj = Activator.CreateInstance(this.genType, this.gameField) as GameObject;
-                tempGObj.SpriteLocation = this.getPoint();
-            }));
+            var tempGObj = Activator.CreateInstance(this.genType, this.gameField, this.getPoint()) as GameObject; //todo: конструктор не найден
             OnGenerated(tempGObj);
         }
 

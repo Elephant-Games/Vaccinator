@@ -20,16 +20,16 @@ namespace Vaccinator.Game.GameObjects {
         private Point lastDirection;
         private byte countStones;
 
-        public Player(FormGame gameField) :
-            base(gameField, SKIN, SPEED, SHOT_SPEED, BULLET_SPEED, BULLET_POWER, HEALTH) {
-           
-            base.SpriteLocation = new Point(gameField.Width / 2, gameField.Height / 2);
+        public Player(FormGame gameField, Point spawn) :
+            base(gameField, spawn, SKIN, SPEED, SHOT_SPEED, BULLET_SPEED, BULLET_POWER, HEALTH) {
+
             this.countStones = 0;
             this.lastDirection = new Point();
         }
 
         public override void Move() {
             //todo: start work
+            this.updater.Stop();
             ActivityController.GetInstance().MRE_Pause.WaitOne();
             this.FindObjectForPicking();
 
@@ -46,20 +46,20 @@ namespace Vaccinator.Game.GameObjects {
             if (Game.GetAsyncKeyState((int)Keys.Right))
                 x += shift;
 
-            (new Thread(() => {
+            Task.Run(() => {
                 if (x != 0 || y != 0)
                     this.lastDirection = new Point(x, y);
 
                 if (Game.GetAsyncKeyState((int)Keys.Space))
                     this.Shot(this.lastDirection); //todo: test
-            })).Start();
+            });
 
 
             if (x == 0 && y == 0)
                 return;
 
-            this.MoveByX(x);
-            this.MoveByY(y);
+            this.MoveByXY(x, y);
+            this.updater.Stop();
         }
 
         public async void FindObjectForPicking() {

@@ -10,19 +10,14 @@ using Vaccinator.GUI.GameWindow;
 namespace Vaccinator.Game.GameObjects {
     class ThrownStone : Stone {
 
-        public ThrownStone(FormGame gameField, Point spawn, Point shift, byte power, byte speed) : base(gameField, power, speed) {
-            this.SetPosition(spawn);
+        public ThrownStone(FormGame gameField, Point spawn, Point shift, byte power, byte speed) : base(gameField, spawn, power, speed) {
             this.shift = shift;
         }
 
         public override void Move() {
             this.isEndMove();
 
-            this.gameField.Invoke(new MethodInvoker(() => {
-                this.Sprite.Left += shift.X;
-                this.Sprite.Top += shift.Y;
-            }));
-
+            this.MoveByXY(shift.X, shift.Y);
             this.findHited();
         }
 

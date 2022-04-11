@@ -12,6 +12,9 @@ namespace Vaccinator {
     /// Контроллер, отвечающий за переключение между окнами и передачу данных
     /// </summary>
     class ActivityController {
+        public const ushort MAX_WAIT_FORM_TIME = 5_000; //ms
+        public const byte INTERVAL_FOR_CHECKING_FORM = 10; //ms
+
         private static ActivityController instance;
 
         private Thread curFThread;
@@ -105,17 +108,17 @@ namespace Vaccinator {
                 this.suspendTime = DateTime.Now;
                 this.pause.Reset();
             } else {
-                this.suspendTime = new DateTime(0);
+                this.suspendTime = new DateTime();
                 this.pause.Set();
             }
         }
 
         private void initOpenWindow() {
             var time = DateTime.Now;
-            while (this.parentForm == null || !this.parentForm.IsInit && (time - DateTime.Now).TotalMilliseconds < 5000)
-                Thread.Sleep(10);
+            while (this.parentForm == null || !this.parentForm.IsInit && (time - DateTime.Now).TotalMilliseconds < MAX_WAIT_FORM_TIME)
+                Thread.Sleep(INTERVAL_FOR_CHECKING_FORM);
             if (!this.parentForm.IsInit)
-                throw new IncompleteInitException();
+                throw new IncompleteInitException("Form waiting time exceeded!");
 
             if (this.currentForm != null)
                 this.currentForm.Invoke(new MethodInvoker(() => this.currentForm.Close()));
