@@ -16,7 +16,20 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         public override void Move(object sender, EventArgs args) {
-            base.MoveTo(Game.GetInstance().Player.SpriteLocation);
+            base.MoveTo(Game.GetInstance().Player.GetCenter());
+        }
+
+        public override void Move() {
+            if (this.IsIntersected(Game.GetInstance().Player)) {
+                base.isMoving = false;
+                return;
+            }
+            base.Move();
+        }
+
+        public override void Destroy(object sender = null, EventArgs e = null) {
+            this.shoter.Dispose();
+            base.Destroy(sender, e);
         }
 
         protected void Shot(object sender, EventArgs args) {
@@ -31,21 +44,8 @@ namespace Vaccinator.Game.GameObjects {
                 return;
             }
 
-            new Vaccine(this.gameField, this.SpriteLocation, Game.GetInstance().Player.SpriteLocation, this.BulPower, this.BulSpeed);
+            new Vaccine(this.gameField, this.GetCenter(), Game.GetInstance().Player.GetCenter(), this.BulPower, this.BulSpeed);
             this.shoter.Interval = this.ShotSpeed * 1000;
-        }
-
-        public override void Move() {
-            if (this.IsIntersected(Game.GetInstance().Player)) {
-                base.isMoving = false;
-                return;
-            }
-            base.Move();
-        }
-
-        public override void Destroy(object sender = null, EventArgs e = null) {
-            this.shoter.Dispose();
-            base.Destroy(sender, e);
         }
 
         private static byte getBulletPower(byte[] bulPow) {

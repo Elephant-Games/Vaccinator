@@ -22,7 +22,7 @@ namespace Vaccinator.Game {
             return instance;
         }
 
-        private class Keys {
+        public class Keys {
             private System.Windows.Forms.Keys up;
             private System.Windows.Forms.Keys down;
             private System.Windows.Forms.Keys right;

@@ -27,9 +27,8 @@ namespace Vaccinator.Game.GameObjects {
             this.lastDirection = new Point();
         }
 
-        public override void Move() {
+        public override async void Move() {
             //todo: start work
-            this.updater.Stop();
             ActivityController.GetInstance().MRE_Pause.WaitOne();
             this.FindObjectForPicking();
 
@@ -59,7 +58,6 @@ namespace Vaccinator.Game.GameObjects {
                 return;
 
             this.MoveByXY(x, y);
-            this.updater.Stop();
         }
 
         public async void FindObjectForPicking() {

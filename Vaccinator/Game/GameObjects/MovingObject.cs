@@ -71,8 +71,8 @@ namespace Vaccinator.Game.GameObjects {
 
             double shift = this.getShift();
 
-            int nX = (int)(shift * (delX / length)),
-                nY = (int)(shift * (delY / length));
+            int nX = (int)Math.Round(shift * (delX / length), 0),
+                nY = (int)Math.Round(shift * (delY / length), 0);
 
 
             this.MoveByXY(nX, nY);

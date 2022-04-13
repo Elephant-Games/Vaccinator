@@ -9,7 +9,7 @@ namespace Vaccinator.Game.GameObjects {
         public const byte BULLET_SPEED = 3;
         public static readonly byte[] BULLET_POWER = new byte[] { 1, 2 };
         public const byte HEALTH = 1;
-        public static readonly Image skin = Properties.Resources.boss_enemy_b;
+        public static readonly Image skin = Properties.Resources.base_enemy_a;
 
         /// <summary>
         /// 

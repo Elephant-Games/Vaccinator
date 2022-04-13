@@ -87,10 +87,6 @@ namespace Vaccinator.Game.GameObjects {
                 countObjects[this.GetType()] += 1;
         }
 
-        /*public void SetSprite(PictureBox sprite) {
-            this.sprite = sprite;
-        }*/
-
         /// <summary>
         /// Рассчитывает расстояние до центра объекта GameObject
         /// </summary>
@@ -174,6 +170,13 @@ namespace Vaccinator.Game.GameObjects {
             this.SetYCoord(this.sprite.Location.Y + shift);
         }
 
+        public Point GetCenter() {
+            return new Point(
+                this.sprite.Location.X + this.sprite.Width / 2,
+                this.sprite.Location.Y + this.sprite.Height / 2
+            );
+        }
+
         public bool IsVisible() {
             return this.sprite.Visible;
         }
@@ -190,27 +193,25 @@ namespace Vaccinator.Game.GameObjects {
         //=====================================PRIVATE====================================
 
         private bool isHorisontalValid(int x, Type type = null) {
-            if (type != null && !type.IsSubclassOf(typeof(Bullet)) && !type.IsEquivalentTo(typeof(Player))) {
+            if (type == null || !type.IsSubclassOf(typeof(Bullet)) && !type.IsEquivalentTo(typeof(Player))) {
                 return
                     x >= -CONFIDENCE_INTERVAL
                     && x <= this.gameField.Width + CONFIDENCE_INTERVAL;
-            } else {
-                return
-                    x >= 0
-                    && x <= this.gameField.Width;
             }
+            return
+                x >= 0
+                && x <= this.gameField.Width;
         }
 
         private bool isVerticalValid(int y, Type type = null) {
-            if (type != null && !type.IsSubclassOf(typeof(Bullet)) && !type.IsEquivalentTo(typeof(Player))) {
+            if (type == null || /*!type.IsSubclassOf(typeof(Bullet)) && */!typeof(Player).IsEquivalentTo(type)) {
                 return
                     y >= -CONFIDENCE_INTERVAL
                     && y <= this.gameField.Height + CONFIDENCE_INTERVAL;
-            } else {
-                return
-                    y >= this.gameField.TopBarHeight
-                    && y <= this.gameField.Height;
             }
+            return
+                y >= this.gameField.TopBarHeight
+                && y <= this.gameField.Height;
         }
 
         private class Sizes {
