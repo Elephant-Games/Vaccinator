@@ -58,6 +58,7 @@
     <Compile Include="Fonts\FontName.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\GameObjects\BaseEnemy.cs" />
+    <Compile Include="Game\GameObjects\Bonus.cs" />
     <Compile Include="Game\GameObjects\BossEnemy.cs" />
     <Compile Include="Game\GameObjects\Bullet.cs" />
     <Compile Include="Game\GameObjects\Character.cs" />
@@ -66,9 +67,11 @@
     <Compile Include="Game\GameObjects\MBossEnemy.cs" />
     <Compile Include="Game\GameObjects\MovingObject.cs" />
     <Compile Include="Game\GameObjects\Player.cs" />
+    <Compile Include="Game\GameObjects\QrCode.cs" />
     <Compile Include="Game\GameObjects\Stone.cs" />
     <Compile Include="Game\GameObjects\ThrownStone.cs" />
     <Compile Include="Game\GameObjects\Vaccine.cs" />
+    <Compile Include="Game\GameObjects\Withdrawal.cs" />
     <Compile Include="Game\Generator.cs" />
     <Compile Include="GUI\GameWindow\FormGame.cs">
       <SubType>Form</SubType>
