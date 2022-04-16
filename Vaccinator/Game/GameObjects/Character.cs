@@ -1,93 +1,77 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Vaccinator.GUI;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
-    abstract class Character : GameObject, IMoveable {
+    abstract class Character : MovingObject {
         private const byte SAFE_JUMP_INTERVAL = 5; //px
-        private const byte SAFE_AREA_INTERVAL = 68; //px
 
-        private readonly System.Timers.Timer updater = new System.Timers.Timer(Game.TICK);
-
-        private byte speed;
         private byte shotSpeed;
         private byte bulSpeed;
         private byte bulPower;
         private byte health;
 
-        private double shift = 0;
+        protected bool canShot = true;
 
-        private Point destination;
-        private bool isMoving;
+        //==========================================GETTERS/SETTERS======================================
 
-        protected Character(FormGame gameField, Image sprite, byte speed, byte shotSpeed, byte bulSpeed, byte bulPower, byte health) :
-            base(gameField, sprite) {
+        public byte ShotSpeed {
+            get {
+                return this.shotSpeed;
+            }
+        }
+
+        public byte BulSpeed {
+            get {
+                return this.bulSpeed;
+            }
+        }
+
+        public byte BulPower {
+            get {
+                return this.bulPower;
+            }
+        }
+
+        //=========================================CONSTRUCTOR===========================================
+        protected Character(FormGame gameField, Point spawn, Image skin, byte speed, byte shotSpeed, byte bulSpeed, byte bulPower, byte health) :
+            base(gameField, spawn, skin, speed) {
             
-            this.speed = speed;
             this.shotSpeed = shotSpeed;
             this.bulSpeed = bulSpeed;
             this.bulPower = bulPower;
             this.health = health;
-
-            this.isMoving = true;
-            this.destination = new Point(0, 0);//base.SpriteLocation;
-
-            this.updater.Elapsed += Move;
-            this.updater.Start();
         }
 
-
-        /// <summary>
-        /// Задаёт точку назначения и начинает перемещать объект в её сторону
-        /// </summary>
-        /// <param name="destination">Точка назначения</param>
-        public void MoveTo(Point destination) {
-            this.destination = destination;
-            this.isMoving = true;
-            this.Move();
-        }
-
-        public virtual void Move() {
-            {
-                var aController = ActivityController.GetInstance();
-                if (!aController.MRE_Pause.WaitOne(0)) {
-                    this.updater.Stop();
-                    aController.MRE_Pause.WaitOne();
-                    this.updater.Start();
-                }
-            }
-            //if (this.DistanceTo(Game.GetInstance().Players.First.Value) <= SAFE_AREA_INTERVAL) { //todo: temp solution
-            if (this.IsIntersected(Game.GetInstance().Player)) {
-                this.isMoving = false;
+        public void Hit(Bullet bullet) {    
+            /*if (!bullet.IsActive)
+                return;*/
+            if (!(this is Player) && (bullet is Vaccine))
                 return;
+
+            if (this.health < bullet.Power) {
+                if (this is Player)
+                    Program.Exit();
+                this.Destroy();
             }
-
-            double delX = this.destination.X - base.SpriteLocation.X;
-            double delY = this.destination.Y - base.SpriteLocation.Y;
-            double delXS = Math.Pow(delX, 2);
-            double delYS = Math.Pow(delY, 2);
-            double length = Math.Sqrt(delXS + delYS);
-
-            double shift = this.getShift();
-
-            int nX = (int) (shift * (delX / length)),
-                nY = (int) (shift * (delY / length));
-
-
-            base.MoveToLeft(nX);
-            base.MoveToTop(nY);
+            else
+                this.health -= bullet.Power;
         }
 
-        public virtual void Move(object sender, EventArgs args) {
-            if (!this.isMoving)
-                return;
-            this.Move();
+        protected virtual bool Shot(Bullet bullet) {
+            if (!this.canShot) {
+                return false;
+            }
+            this.canShot = false;
+
+            var timer = new System.Timers.Timer();
+            timer.Interval = this.shotSpeed * 1000;
+            timer.Elapsed += (s, a) => {
+                this.canShot = true;
+                timer.Dispose();
+            };
+            timer.Start();
+            return true;
         }
 
         protected bool isSpriteCanJumpToPoint(Point point) {
@@ -95,17 +79,6 @@ namespace Vaccinator.Game.GameObjects {
                 !point.Equals(base.SpriteLocation)
                 && Math.Abs(point.X - base.SpriteLocation.X) < SAFE_JUMP_INTERVAL
                 && Math.Abs(point.Y - base.SpriteLocation.Y) < SAFE_JUMP_INTERVAL;
-        }
-
-        protected double getShift() {
-            if (this.shift == 0)
-                this.shift = this.speed * GameObject.PIXELS_PER_TICK;
-            return this.shift;
-        }
-
-        public void Stop() {
-            this.destination = base.SpriteLocation;
-            this.isMoving = false;
         }
     }
 }

@@ -1,26 +1,55 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Vaccinator.GUI;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
     abstract class Enemy : Character {
 
-        protected Enemy(FormGame gameField, Image skin, byte speed, byte shotSpeed, byte bulSpeed, byte[] bulPower, byte health) :
-            base(gameField, skin, speed, shotSpeed, bulSpeed, getBulletPower(bulPower), health) {
+        private System.Timers.Timer shoter = new System.Timers.Timer();
+
+        protected Enemy(FormGame gameField, Point spawn, Image skin, byte speed, byte shotSpeed, byte bulSpeed, byte[] bulPower, byte health) :
+            base(gameField, spawn, skin, speed, shotSpeed, bulSpeed, getBulletPower(bulPower), health) {
+
+            this.shoter.Interval = this.ShotSpeed * 1000;
+            this.shoter.Elapsed += Shot;
+            this.shoter.Start();
+        }
+
+        public override void Move(object sender, EventArgs args) {
+            base.MoveTo(Game.GetInstance().Player.GetCenter());
+        }
+
+        public override void Move() {
+            if (this.IsIntersected(Game.GetInstance().Player)) {
+                base.isMoving = false;
+                return;
+            }
+            base.Move();
+        }
+
+        public override void Destroy(object sender = null, EventArgs e = null) {
+            this.shoter.Dispose();
+            base.Destroy(sender, e);
+        }
+
+        protected void Shot(object sender, EventArgs args) {
+            var aController = ActivityController.GetInstance();
+            //suspend thread
+            if (!aController.MRE_Pause.WaitOne(0)) {
+                var now = DateTime.Now;
+                this.shoter.Stop();
+                aController.MRE_Pause.WaitOne();
+                this.shoter.Interval = (now - aController.MRE_Time).TotalMilliseconds;
+                this.shoter.Start();
+                return;
+            }
+
+            new Vaccine(this.gameField, this.GetCenter(), Game.GetInstance().Player.GetCenter(), this.BulPower, this.BulSpeed);
+            this.shoter.Interval = this.ShotSpeed * 1000;
         }
 
         private static byte getBulletPower(byte[] bulPow) {
             return (byte)GameObject.random.Next(bulPow[0], bulPow[1]);
-        }
-
-        public override void Move(object sender, EventArgs args) {
-            base.MoveTo(Game.GetInstance().Player.SpriteLocation);
         }
     }
 }

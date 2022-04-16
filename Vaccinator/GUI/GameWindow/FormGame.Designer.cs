@@ -44,22 +44,22 @@ namespace Vaccinator.GUI.GameWindow {
             // 
             this.labelAmmoT.BackColor = System.Drawing.Color.Black;
             this.labelAmmoT.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labelAmmoT.Location = new System.Drawing.Point(634, 0);
+            this.labelAmmoT.Location = new System.Drawing.Point(645, 0);
             this.labelAmmoT.Name = "labelAmmoT";
-            this.labelAmmoT.Size = new System.Drawing.Size(112, 41);
+            this.labelAmmoT.Size = new System.Drawing.Size(96, 41);
             this.labelAmmoT.TabIndex = 1;
             this.labelAmmoT.Text = "AMMO:";
-            this.labelAmmoT.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelAmmoT.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelAmmoC
             // 
             this.labelAmmoC.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labelAmmoC.Location = new System.Drawing.Point(752, 0);
+            this.labelAmmoC.Location = new System.Drawing.Point(742, 0);
             this.labelAmmoC.Name = "labelAmmoC";
-            this.labelAmmoC.Size = new System.Drawing.Size(29, 41);
+            this.labelAmmoC.Size = new System.Drawing.Size(39, 41);
             this.labelAmmoC.TabIndex = 0;
             this.labelAmmoC.Text = "0";
-            this.labelAmmoC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelAmmoC.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // FormGame
             // 

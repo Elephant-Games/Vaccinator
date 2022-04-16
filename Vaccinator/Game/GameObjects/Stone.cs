@@ -1,45 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
+using Vaccinator.Exceptions.GameObjectExceptions;
 using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
-    class Stone : Bullet, IPickable {
+    class Stone : Bullet {
         private static readonly System.Drawing.Image SKIN = Properties.Resources.base_enemy_a;
-
-        private bool isDropped;
-        private bool isPicked;
-
-        public bool IsDropped {
-            get {
-                return this.isDropped;
-            }
-        }
 
         //=================================CONSTRUCTORS========================
 
-        public Stone(object gameField) : base(gameField as FormGame, SKIN, getPower()) {
-            this.isDropped = false;
+        public Stone(params object[] args) : this(args[0] as FormGame, (Point) args[1], 0, 0) {
+
         }
 
-        public Stone(FormGame gameField, bool isDropped) : this(gameField) {
-            this.isDropped = isDropped;
-        }
-
-        private static byte getPower() {
-            return (byte)GameObject.random.Next(1, 3);
+        public Stone(FormGame gameField, Point spawn, byte power, byte speed) : base(gameField, spawn, SKIN, power, speed) {
+            if (!(this is ThrownStone))
+                this.updater.Dispose();
         }
 
         public override void Move() {
-            if (this.isDropped)
+            if (this is ThrownStone)
                 base.Move();
+            else
+                throw new NotMoveableObjectException($"Object {this} can't move in general!");
         }
 
-        public void Pick(Player player) {
-            this.Hide();
-            this.isPicked = true;
+        protected override void findHited() {
+            if (this is ThrownStone)
+                base.findHited();
+            else
+                throw new NotMoveableObjectException($"Object {this} isn't a bullet!");
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using Vaccinator.Exceptions.GameObjectExceptions;
 using Vaccinator.Exceptions.WindowExceptions;
 using Vaccinator.GUI;
 using Vaccinator.GUI.GameWindow;
@@ -18,9 +20,15 @@ namespace Vaccinator.Game.GameObjects {
         private static Dictionary<Type, int> countObjects = new Dictionary<Type, int>(); //<class name, count objects>
 
         protected FormGame gameField;
-        private Panel sprite;
+        private readonly Panel sprite;
 
         //============================Containers=====================================
+
+        public Panel Sprite {
+            get {
+                return this.sprite;
+            }
+        }
 
         public Size SpriteSize {
             get {
@@ -34,9 +42,9 @@ namespace Vaccinator.Game.GameObjects {
             }
 
             set {
-                if (!isHorisontalValid(value.X)
-                    || !isVerticalValid(value.Y)) {
-                    if (this is Player) {//TODO: tp character to other side of the field
+                if (!isHorisontalValid(value.X, this.GetType())
+                    || !isVerticalValid(value.Y, this.GetType())) {
+                    if (this is Player || this is Bullet) {//TODO: tp character to other side of the field
                         return;
                     }
                     throw new PointOutOfRangeException("The point outside the confidence interval.", value);
@@ -48,8 +56,9 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         //============================Constructors====================================
-        public GameObject(FormGame gameField, Image skin) {
+        public GameObject(FormGame gameField, Point spawn, Image skin) {
             this.gameField = gameField;
+
 
             //Panel initialization
             {
@@ -59,24 +68,24 @@ namespace Vaccinator.Game.GameObjects {
                 //this.pictureBox1.Name = "pictureBox1";
 
                 this.sprite.Size = Sizes.GetSize(this);
+
                 this.sprite.TabIndex = 0;
                 this.sprite.TabStop = false;
-
-                this.gameField.Controls.Add(this.sprite);
                 this.sprite.BackgroundImageLayout = ImageLayout.Zoom;
-                this.sprite.Parent = this.gameField;
                 this.sprite.BackColor = Color.Transparent;
             }
+
+            this.gameField.Invoke(new MethodInvoker(() => {
+                this.sprite.Parent = this.gameField;
+                this.gameField.Controls.Add(this.sprite);
+                this.sprite.Location = spawn;
+            }));
 
             if (!countObjects.ContainsKey(this.GetType()))
                 countObjects.Add(this.GetType(), 1);
             else
                 countObjects[this.GetType()] += 1;
         }
-
-        /*public void SetSprite(PictureBox sprite) {
-            this.sprite = sprite;
-        }*/
 
         /// <summary>
         /// Рассчитывает расстояние до центра объекта GameObject
@@ -98,8 +107,7 @@ namespace Vaccinator.Game.GameObjects {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void Destroy(object sender, EventArgs e) {
-            this.sprite.Visible = false;
+        public virtual void Destroy(object sender = null, EventArgs e = null) {
             Game.GetInstance().DeleteGameObject(this);
         }
 
@@ -112,39 +120,61 @@ namespace Vaccinator.Game.GameObjects {
             return this.sprite.Bounds.IntersectsWith(other.sprite.Bounds);
         }
 
+        public void SetXYCoords(Point coords) {
+            this.SetXYCoords(coords.X, coords.Y);
+        }
+
+        public void SetXYCoords(int x, int y) {
+            if (this.isHorisontalValid(x) && this.isVerticalValid(y)) {
+                this.gameField.Invoke(new MethodInvoker(() => {
+                    this.sprite.Left = x;
+                    this.sprite.Top = y;
+                }));
+            }
+        }
+
         /// <summary>
         /// Устанавливает координату x объекта GameObject
         /// </summary>
-        /// <param name="left">Расстояние до точки от левого края окна</param>
-        public void SetLeftCoord(int left) {
-            if (isHorisontalValid(left))
-                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Left = left));
+        /// <param name="x">Расстояние до точки от левого края окна</param>
+        public void SetXCoord(int x) {
+            this.SetXYCoords(x, 0);
         }
 
 
         /// <summary>
         /// Устанавливает координату y объекта GameObject
         /// </summary>
-        /// <param name="top">Расстояние до точки от верхнего края окна</param>
-        public void SetTopCoord(int top) {
-            if (isVerticalValid(top))
-                this.gameField.Invoke(new MethodInvoker(() => this.sprite.Top = top));
+        /// <param name="y">Расстояние до точки от верхнего края окна</param>
+        public void SetYCoord(int y) {
+            this.SetXYCoords(0, y);
+        }
+
+        public void MoveByXY(int shiftX, int shiftY) {
+            this.SetXYCoords(this.SpriteLocation.X + shiftX, this.SpriteLocation.Y + shiftY);
         }
 
         /// <summary>
         /// Сдвигает объект влево на lShift пикселей
         /// </summary>
-        /// <param name="lShift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
-        public void MoveToLeft(int lShift) {
-            this.SetLeftCoord(this.sprite.Location.X + lShift);
+        /// <param name="shift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
+        public void MoveByX(int shift) {
+            this.SetXCoord(this.sprite.Location.X + shift);
         }
 
         /// <summary>
         /// Сдвигает объект вниз на tShift пикселей
         /// </summary>
-        /// <param name="tShift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
-        public void MoveToTop(int tShift) {
-            this.SetTopCoord(this.sprite.Location.Y + tShift);
+        /// <param name="shift">Расстояние в пикселях, на которое нужно сдвинуть объект</param>
+        public void MoveByY(int shift) {
+            this.SetYCoord(this.sprite.Location.Y + shift);
+        }
+
+        public Point GetCenter() {
+            return new Point(
+                this.sprite.Location.X + this.sprite.Width / 2,
+                this.sprite.Location.Y + this.sprite.Height / 2
+            );
         }
 
         public bool IsVisible() {
@@ -162,16 +192,26 @@ namespace Vaccinator.Game.GameObjects {
         }
         //=====================================PRIVATE====================================
 
-        private bool isHorisontalValid(int x) {
+        private bool isHorisontalValid(int x, Type type = null) {
+            if (type == null || !type.IsSubclassOf(typeof(Bullet)) && !type.IsEquivalentTo(typeof(Player))) {
+                return
+                    x >= -CONFIDENCE_INTERVAL
+                    && x <= this.gameField.Width + CONFIDENCE_INTERVAL;
+            }
             return
-                x >= -CONFIDENCE_INTERVAL
-                && x <= this.gameField.Width + CONFIDENCE_INTERVAL;
+                x >= 0
+                && x <= this.gameField.Width;
         }
 
-        private bool isVerticalValid(int y) {
+        private bool isVerticalValid(int y, Type type = null) {
+            if (type == null || /*!type.IsSubclassOf(typeof(Bullet)) && */!typeof(Player).IsEquivalentTo(type)) {
+                return
+                    y >= -CONFIDENCE_INTERVAL
+                    && y <= this.gameField.Height + CONFIDENCE_INTERVAL;
+            }
             return
-                y >= -CONFIDENCE_INTERVAL
-                && y <= this.gameField.Height + CONFIDENCE_INTERVAL;
+                y >= this.gameField.TopBarHeight
+                && y <= this.gameField.Height;
         }
 
         private class Sizes {

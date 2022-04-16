@@ -48,10 +48,12 @@
   <ItemGroup>
     <Compile Include="ActivityController.cs" />
     <Compile Include="CovidStat.cs" />
+    <Compile Include="Exceptions\GameObjectExceptions\NonCharacterGameObjectException.cs" />
+    <Compile Include="Exceptions\GameObjectExceptions\NotMoveableObjectException.cs" />
     <Compile Include="Exceptions\ParsingExceptions\InvalidUrlException.cs" />
     <Compile Include="Exceptions\WindowExceptions\PointOutOfRangeException.cs" />
     <Compile Include="Exceptions\WindowExceptions\IncompleteInitException.cs" />
-    <Compile Include="Exceptions\WindowExceptions\UndefinedGameObjectException.cs" />
+    <Compile Include="Exceptions\GameObjectExceptions\UndefinedGameObjectException.cs" />
     <Compile Include="Fonts\Font.cs" />
     <Compile Include="Fonts\FontName.cs" />
     <Compile Include="Game\Game.cs" />
@@ -62,12 +64,13 @@
     <Compile Include="Game\GameObjects\Character.cs" />
     <Compile Include="Game\GameObjects\Enemy.cs" />
     <Compile Include="Game\GameObjects\GameObject.cs" />
-    <Compile Include="Game\GameObjects\IMoveable.cs" />
-    <Compile Include="Game\GameObjects\IPickable.cs" />
     <Compile Include="Game\GameObjects\MBossEnemy.cs" />
+    <Compile Include="Game\GameObjects\MovingObject.cs" />
     <Compile Include="Game\GameObjects\Player.cs" />
     <Compile Include="Game\GameObjects\QrCode.cs" />
     <Compile Include="Game\GameObjects\Stone.cs" />
+    <Compile Include="Game\GameObjects\ThrownStone.cs" />
+    <Compile Include="Game\GameObjects\Vaccine.cs" />
     <Compile Include="Game\GameObjects\Withdrawal.cs" />
     <Compile Include="Game\Generator.cs" />
     <Compile Include="GUI\GameWindow\FormGame.cs">
@@ -121,6 +124,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -140,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\base_enemy-a.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\boss_enemy-b.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
