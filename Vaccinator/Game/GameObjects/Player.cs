@@ -10,6 +10,8 @@ using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
     class Player : Character {
+        private Settings settings = new Settings();
+
         public const byte SPEED = 2;
         public const byte SHOT_SPEED = 3;
         public const byte BULLET_SPEED = 3;

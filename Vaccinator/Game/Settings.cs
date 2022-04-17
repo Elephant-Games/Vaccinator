@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Vaccinator.Game {
     class Settings {
+        //settings = Settings.GetInstance();
+
         private static Settings instance;
 
         private byte difficult;
@@ -13,7 +15,13 @@ namespace Vaccinator.Game {
         private Keys[] keys;
         private bool lang;
 
-        private Settings() { }
+        public Settings(byte difficult = 2, bool twoPlayers = false, bool lan = true) {
+            this.difficult = difficult;
+            this.isTwoPlayers = twoPlayers;
+            this.lang = lan;
+            this.keys = new Keys[2];
+            this.Load(this.isTwoPlayers);
+        }
 
         public static Settings GetInstance() {
             if (instance == null) {
@@ -21,6 +29,46 @@ namespace Vaccinator.Game {
             }
             return instance;
         }
+
+        public void Load(bool isTwoPlayers) {
+
+            if (isTwoPlayers) {
+                
+            }
+            else {
+                this.Up = System.Windows.Forms.Keys.Up;
+                this.Down = System.Windows.Forms.Keys.Down;
+                this.Up = System.Windows.Forms.Keys.Left;
+                this.Up = System.Windows.Forms.Keys.Right;
+                this.Up = System.Windows.Forms.Keys.Space;
+            }
+        }
+
+        public System.Windows.Forms.Keys Up {
+            get {
+                return this.Up;
+            }
+        }
+        public System.Windows.Forms.Keys Down {
+            get {
+                return this.Down;
+            }
+        }
+        public System.Windows.Forms.Keys Right {
+            get {
+                return this.Right;
+            }
+        }
+        public System.Windows.Forms.Keys Left {
+            get {
+                return this.Left;
+            }
+        }
+        public System.Windows.Forms.Keys Shot {
+            get {
+                return this.Shot;
+            }
+        } 
 
         public class Keys {
             private System.Windows.Forms.Keys up;
@@ -76,7 +124,15 @@ namespace Vaccinator.Game {
             }
 
             public Keys() {
+                this.Load();
+            }
 
+            public void Load() {
+                this.up = System.Windows.Forms.Keys.Up;
+                this.down = System.Windows.Forms.Keys.Down;
+                this.left = System.Windows.Forms.Keys.Left;
+                this.right = System.Windows.Forms.Keys.Right;
+                this.shot = System.Windows.Forms.Keys.Space;
             }
         }
     }
