@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Vaccinator.Game {
+﻿namespace Vaccinator.Game {
     class Settings {
         //settings = Settings.GetInstance();
 
@@ -15,12 +9,7 @@ namespace Vaccinator.Game {
         private Keys[] keys;
         private bool lang;
 
-        public Settings(byte difficult = 2, bool twoPlayers = false, bool lan = true) {
-            this.difficult = difficult;
-            this.isTwoPlayers = twoPlayers;
-            this.lang = lan;
-            this.keys = new Keys[2];
-            this.Load(this.isTwoPlayers);
+        private Settings() {
         }
 
         public static Settings GetInstance() {
@@ -30,44 +19,25 @@ namespace Vaccinator.Game {
             return instance;
         }
 
+        public Keys[] SKeys {
+            get {
+                return this.keys;
+            }
+        }
+
         public void Load(bool isTwoPlayers) {
-
-            if (isTwoPlayers) {
-                
+            this.difficult = 2;
+            this.isTwoPlayers = false;
+            this.lang = false;
+            this.keys = new Keys[2];
+            this.Load(this.isTwoPlayers);
+            if (!isTwoPlayers) {
+                this.keys[0] = new Keys(false);
             }
-            else {
-                this.Up = System.Windows.Forms.Keys.Up;
-                this.Down = System.Windows.Forms.Keys.Down;
-                this.Up = System.Windows.Forms.Keys.Left;
-                this.Up = System.Windows.Forms.Keys.Right;
-                this.Up = System.Windows.Forms.Keys.Space;
-            }
-        }
-
-        public System.Windows.Forms.Keys Up {
-            get {
-                return this.Up;
+            else if(isTwoPlayers) {
+                this.keys[1] = new Keys(true);
             }
         }
-        public System.Windows.Forms.Keys Down {
-            get {
-                return this.Down;
-            }
-        }
-        public System.Windows.Forms.Keys Right {
-            get {
-                return this.Right;
-            }
-        }
-        public System.Windows.Forms.Keys Left {
-            get {
-                return this.Left;
-            }
-        }
-        public System.Windows.Forms.Keys Shot {
-            get {
-                return this.Shot;
-            }
         } 
 
         public class Keys {
@@ -123,16 +93,27 @@ namespace Vaccinator.Game {
                 }
             }
 
-            public Keys() {
-                this.Load();
+            public Keys(bool isTwoPlayer) {
+                this.Load(isTwoPlayer);
             }
 
-            public void Load() {
+
+            
+            public void Load(bool isTwoPlayer) {
+            if (!isTwoPlayer) {
                 this.up = System.Windows.Forms.Keys.Up;
                 this.down = System.Windows.Forms.Keys.Down;
                 this.left = System.Windows.Forms.Keys.Left;
                 this.right = System.Windows.Forms.Keys.Right;
+                this.shot = System.Windows.Forms.Keys.Enter;
+            }
+            else if(isTwoPlayer) {
+                this.up = System.Windows.Forms.Keys.W;
+                this.down = System.Windows.Forms.Keys.S;
+                this.left = System.Windows.Forms.Keys.A;
+                this.right = System.Windows.Forms.Keys.D;
                 this.shot = System.Windows.Forms.Keys.Space;
+            }
             }
         }
     }

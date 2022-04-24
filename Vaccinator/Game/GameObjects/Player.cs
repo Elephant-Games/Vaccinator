@@ -10,7 +10,6 @@ using Vaccinator.GUI.GameWindow;
 
 namespace Vaccinator.Game.GameObjects {
     class Player : Character {
-        private Settings settings = new Settings();
 
         public const byte SPEED = 2;
         public const byte SHOT_SPEED = 3;
@@ -30,6 +29,7 @@ namespace Vaccinator.Game.GameObjects {
         }
 
         public override async void Move() {
+            var settings = Settings.GetInstance();
             //todo: start work
             ActivityController.GetInstance().MRE_Pause.WaitOne();
             this.FindObjectForPicking();
@@ -38,20 +38,20 @@ namespace Vaccinator.Game.GameObjects {
             y = 0;
             int shift = (int)base.getShift();
 
-            if (Game.GetAsyncKeyState((int)Keys.Up))
+            if (Game.GetAsyncKeyState((int)settings.SKeys[0].Up))
                 y -= shift;
-            if (Game.GetAsyncKeyState((int)Keys.Down))
+            if (Game.GetAsyncKeyState((int)settings.SKeys[0].Down))
                 y += shift;
-            if (Game.GetAsyncKeyState((int)Keys.Left))
+            if (Game.GetAsyncKeyState((int)settings.SKeys[0].Left))
                 x -= shift;
-            if (Game.GetAsyncKeyState((int)Keys.Right))
+            if (Game.GetAsyncKeyState((int)settings.SKeys[0].Right))
                 x += shift;
 
             Task.Run(() => {
                 if (x != 0 || y != 0)
                     this.lastDirection = new Point(x, y);
 
-                if (Game.GetAsyncKeyState((int)Keys.Space))
+                if (Game.GetAsyncKeyState((int)settings.SKeys[0].Shot))
                     this.Shot(this.lastDirection); //todo: test
             });
 
